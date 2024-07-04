@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import Header from './components/Header';
 
 function App(): React.JSX.Element {
 
@@ -15,7 +16,7 @@ function App(): React.JSX.Element {
       <StatusBar />
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View>
-          <Text>Financial Products App</Text>
+          <Header />
         </View>
       </ScrollView>
     </SafeAreaView>
