@@ -1,15 +1,15 @@
 import React from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
-  View,
+  View
 } from 'react-native';
 import Header from './components/Header';
-import Search from './components/Search';
+import PrimaryButton from './components/PrimaryButton';
 import Products from './components/Products';
+import Search from './components/Search';
+import Spacer from './components/Spacer';
 
 function App(): React.JSX.Element {
   return (
@@ -18,8 +18,10 @@ function App(): React.JSX.Element {
       <Header />
       <View style={styles.content}>
         <Search />
-        <View style={{height: 44}} />
+        <Spacer value={44} />
         <Products />
+        <Spacer value={24} />
+        <PrimaryButton />
       </View>
     </SafeAreaView>
   );
@@ -33,6 +35,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 24,
     marginTop: 56,
+    marginBottom: 32,
   },
 });
 

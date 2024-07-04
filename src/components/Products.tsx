@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   listContainer: {
     borderWidth: 1,
     borderColor: '#ECECED',
-    borderRadius: 4,
+    borderRadius: 6,
   },
   itemContainer: {
     padding: 10,
