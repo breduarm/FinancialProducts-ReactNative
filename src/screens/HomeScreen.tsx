@@ -5,10 +5,11 @@ import Search from '../components/Search';
 import Products from '../components/Products';
 import PrimaryButton from '../components/PrimaryButton';
 import {NavDirections} from '../enums/NavDirections';
+import Colors from '../theme/ColorSqueme';
 
 const HomeScreen = ({navigation}): React.JSX.Element => {
   const handleAddNewProduct = () => {
-    navigation.navigate(NavDirections.DETAIL);
+    navigation.navigate(NavDirections.NEW_PRODUCT);
   };
 
   return (
@@ -25,9 +26,10 @@ const HomeScreen = ({navigation}): React.JSX.Element => {
 const styles = StyleSheet.create({
   content: {
     flex: 1,
-    marginHorizontal: 24,
-    marginTop: 56,
-    marginBottom: 32,
+    paddingHorizontal: 24,
+    paddingTop: 56,
+    paddingBottom: 32,
+    backgroundColor: Colors.background,
   },
 });
 

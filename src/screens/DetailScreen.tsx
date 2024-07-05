@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 import DeleteProductModal from '../components/DeleteProductModal';
 import Spacer from '../components/Spacer';
 import SecondaryButton from '../components/SecondaryButton';

@@ -1,11 +1,64 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, Text, ScrollView, TextInput} from 'react-native';
 import Spacer from '../components/Spacer';
 import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
+import Colors from '../theme/ColorSqueme';
+import InputWithError from '../components/InputWithError';
 
 const NewProductScreen = (): React.JSX.Element => {
-  const handleClick = () => {}
+  const [id, setID] = useState('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [logo, setLogo] = useState('');
+  const [releaseDate, setReleaseDate] = useState('');
+  const [reviewDate, setReviewDate] = useState('');
+
+  const validateID = (value: string) => {
+    let error = '';
+    if (value.trim() === '') {
+      error = 'Este campo es requerido';
+    } else if (value.length < 3 || value.length > 10) {
+      error = 'Mínimo 3 caracteres, máximo 10';
+    } else if (false) {
+      error = 'ID no válido';
+    }
+    return error;
+  };
+
+  const validateName = (value: string) => {
+    let error = '';
+    if (value.trim() === '') {
+      error = 'Este campo es requerido';
+    } else if (value.length < 5 || value.length > 100) {
+      error = 'Mínimo 5 caracteres, máximo 100';
+    }
+    return error;
+  };
+
+  const validateDescription = (value: string) => {
+    let error = '';
+    if (value.trim() === '') {
+      error = 'Este campo es requerido';
+    } else if (value.length < 10 || value.length > 200) {
+      error = 'Mínimo 10 caracteres, máximo 200';
+    }
+    return error;
+  };
+
+  const validateReleaseDate = (value: string) => {
+    const currentDate = new Date();
+    const valueDate = new Date(value);
+    let error = '';
+    if (!valueDate) {
+      error = 'Este campo es requerido';
+    } else if (valueDate.valueOf() < currentDate.setHours(0, 0, 0, 0)) {
+      error = 'La fecha debe ser igual o mayor a la fecha actual';
+    }
+    return error;
+  };
+
+  const handleClick = () => {};
 
   return (
     <View style={styles.content}>
@@ -15,32 +68,29 @@ const NewProductScreen = (): React.JSX.Element => {
         showsVerticalScrollIndicator={false}
         automaticallyAdjustContentInsets={true}>
         <View>
-          <View>
-            <Text style={styles.label}>ID</Text>
-            <TextInput
-              style={[styles.input, styles.inputError]}
-              placeholder="Ingrese el ID"
-            />
-            <Text style={styles.textError}>ID no válido</Text>
-          </View>
+          <InputWithError
+            label="ID"
+            placeholder="Ingrese el ID"
+            value={id}
+            onChangeText={setID}
+            validateInput={validateID}
+          />
 
-          <View>
-            <Text style={styles.label}>Nombre</Text>
-            <TextInput
-              style={[styles.input, styles.inputError]}
-              placeholder="Ingrese el nombre"
-            />
-            <Text style={styles.textError}>Nombre no válido</Text>
-          </View>
+          <InputWithError
+            label="Nombre"
+            placeholder="Ingrese el nombre"
+            value={name}
+            onChangeText={setName}
+            validateInput={validateName}
+          />
 
-          <View>
-            <Text style={styles.label}>Descripción</Text>
-            <TextInput
-              style={[styles.input, styles.inputError]}
-              placeholder="Ingrese una descripción"
-            />
-            <Text style={styles.textError}>Este campo es requerido!</Text>
-          </View>
+          <InputWithError
+            label="Descripción"
+            placeholder="Ingrese una descripción"
+            value={description}
+            onChangeText={setDescription}
+            validateInput={validateDescription}
+          />
 
           <View>
             <Text style={styles.label}>Logo</Text>
@@ -51,29 +101,26 @@ const NewProductScreen = (): React.JSX.Element => {
             <Text style={styles.textError}>Este campo es requerido!</Text>
           </View>
 
-          <View>
-            <Text style={styles.label}>Fecha Liberación</Text>
-            <TextInput
-              style={[styles.input, styles.inputError]}
-              placeholder="Ingrese la fecha de liberación"
-            />
-            <Text style={styles.textError}>Este campo es requerido!</Text>
-          </View>
+          <InputWithError
+            label="Fecha Liberación"
+            placeholder="Ingrese la fecha de liberación"
+            value={releaseDate}
+            onChangeText={setReleaseDate}
+            validateInput={validateReleaseDate}
+          />
 
-          <View>
-            <Text style={styles.label}>Fecha Revisión</Text>
-            <TextInput
-              style={[styles.input, styles.inputError]}
-              placeholder="Ingrese la fecha de Revisión"
-            />
-            <Text style={styles.textError}>Este campo es requerido!</Text>
-          </View>
+          <InputWithError
+            label="Fecha Revisión"
+            placeholder="Ingrese la fecha de revisión"
+            value={reviewDate}
+            onChangeText={setReviewDate}
+          />
         </View>
       </ScrollView>
 
       <Spacer value={24} />
 
-      <PrimaryButton handleClick={handleClick}/>
+      <PrimaryButton handleClick={handleClick} />
 
       <Spacer value={12} />
 
@@ -85,9 +132,10 @@ const NewProductScreen = (): React.JSX.Element => {
 const styles = StyleSheet.create({
   content: {
     flex: 1,
-    marginHorizontal: 24,
-    marginTop: 24,
-    marginBottom: 32,
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 32,
+    backgroundColor: Colors.background,
   },
   title: {
     fontSize: 32,
