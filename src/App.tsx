@@ -5,6 +5,10 @@ import Header from './components/Header';
 import {AxiosResponse} from 'axios';
 import axiosInstance from './configs/axiosConfig';
 import Description from './components/Description';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AppNavigator from './navigation/AppNavigator';
+
+const Stack = createNativeStackNavigator();
 
 const App = (): React.JSX.Element => {
   useEffect(() => {
@@ -26,34 +30,7 @@ const App = (): React.JSX.Element => {
     getProducts();
   }, []);
 
-  return (
-    <NavigationContainer>
-      <SafeAreaView style={styles.container}>
-        <StatusBar />
-        <Header />
-        <Description />
-        {/* <View style={styles.content}>
-        <Search />
-        <Spacer value={44} />
-        <Products />
-        <Spacer value={24} />
-        <PrimaryButton />
-      </View> */}
-      </SafeAreaView>
-    </NavigationContainer>
-  );
+  return <AppNavigator />;
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-    marginHorizontal: 24,
-    marginTop: 56,
-    marginBottom: 32,
-  },
-});
 
 export default App;
