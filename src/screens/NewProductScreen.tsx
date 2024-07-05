@@ -5,14 +5,16 @@ import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
 
 const NewProductScreen = (): React.JSX.Element => {
+  const handleClick = () => {}
+
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.content}>
       <Text style={styles.title}>Formulario de Registro</Text>
 
       <ScrollView
         showsVerticalScrollIndicator={false}
         automaticallyAdjustContentInsets={true}>
-        <View style={styles.content}>
+        <View>
           <View>
             <Text style={styles.label}>ID</Text>
             <TextInput
@@ -71,7 +73,7 @@ const NewProductScreen = (): React.JSX.Element => {
 
       <Spacer value={24} />
 
-      <PrimaryButton />
+      <PrimaryButton handleClick={handleClick}/>
 
       <Spacer value={12} />
 
@@ -81,14 +83,17 @@ const NewProductScreen = (): React.JSX.Element => {
 };
 
 const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+    marginHorizontal: 24,
+    marginTop: 24,
+    marginBottom: 32,
+  },
   title: {
     fontSize: 32,
     fontWeight: '700',
     color: '#303034',
-    marginBottom: 32,
-  },
-  content: {
-    flex: 1,
+    marginBottom: 24,
   },
   label: {
     marginVertical: 8,
