@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaView, StatusBar, StyleSheet, View} from 'react-native';
 import Header from './components/Header';
 import {AxiosResponse} from 'axios';
@@ -26,18 +27,20 @@ const App = (): React.JSX.Element => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar />
-      <Header />
-      <Description />
-      {/* <View style={styles.content}>
+    <NavigationContainer>
+      <SafeAreaView style={styles.container}>
+        <StatusBar />
+        <Header />
+        <Description />
+        {/* <View style={styles.content}>
         <Search />
         <Spacer value={44} />
         <Products />
         <Spacer value={24} />
         <PrimaryButton />
       </View> */}
-    </SafeAreaView>
+      </SafeAreaView>
+    </NavigationContainer>
   );
 };
 
