@@ -9,7 +9,6 @@ import PrimaryButton from '../components/PrimaryButton';
 const HomeScreen = (): React.JSX.Element => {
   return (
     <SafeAreaView style={styles.container}>
-      <Header />
       <View style={styles.content}>
         <Search />
         <Spacer value={44} />
