@@ -96,7 +96,7 @@ const DATA = [
 
 type ItemProps = {title: string; description: string};
 
-const Item = ({title, description}: ItemProps) => (
+const Item = ({title, description}: ItemProps): React.JSX.Element => (
   <>
     <View style={styles.itemContainer}>
       <View style={styles.itemContent}>
@@ -109,7 +109,7 @@ const Item = ({title, description}: ItemProps) => (
   </>
 );
 
-const Products = () => {
+const Products = (): React.JSX.Element => {
   return (
     <FlatList
       showsVerticalScrollIndicator={false}

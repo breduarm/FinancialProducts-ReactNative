@@ -1,10 +1,14 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableHighlight} from 'react-native';
 
-const PrimaryButton = (): React.JSX.Element => {
+type ButtonProps = {
+  handleClick: () => void,
+}
+
+const ErrorButton = ({handleClick}: ButtonProps): React.JSX.Element => {
   return (
-    <TouchableHighlight style={styles.container}>
-      <Text style={styles.text}> Agregar </Text>
+    <TouchableHighlight style={styles.container} onPress={handleClick}>
+      <Text style={styles.text}> Eliminar </Text>
     </TouchableHighlight>
   );
 };
@@ -15,12 +19,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,
-    backgroundColor: '#F9DE4A',
+    backgroundColor: '#C32B1F',
   },
   text: {
+    color: '#FFFFFF',
     fontWeight: '900',
     textTransform: 'capitalize',
   },
 });
 
-export default PrimaryButton;
+export default ErrorButton;
