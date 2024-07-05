@@ -1,13 +1,8 @@
 import React, {useEffect} from 'react';
 import {SafeAreaView, StatusBar, StyleSheet, View} from 'react-native';
 import Header from './components/Header';
-import PrimaryButton from './components/PrimaryButton';
-import Products from './components/Products';
-import Search from './components/Search';
-import Spacer from './components/Spacer';
-import axios, {AxiosResponse} from 'axios';
+import {AxiosResponse} from 'axios';
 import axiosInstance from './configs/axiosConfig';
-import Form from './components/Form';
 import Description from './components/Description';
 
 const App = (): React.JSX.Element => {
