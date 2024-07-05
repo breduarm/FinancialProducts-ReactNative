@@ -1,12 +1,16 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
-import Header from '../components/Header';
 import Spacer from '../components/Spacer';
 import Search from '../components/Search';
 import Products from '../components/Products';
 import PrimaryButton from '../components/PrimaryButton';
+import {NavDirections} from '../enums/NavDirections';
 
-const HomeScreen = (): React.JSX.Element => {
+const HomeScreen = ({navigation}): React.JSX.Element => {
+  const handleAddNewProduct = () => {
+    navigation.navigate(NavDirections.NEW_PRODUCT);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -14,7 +18,7 @@ const HomeScreen = (): React.JSX.Element => {
         <Spacer value={44} />
         <Products />
         <Spacer value={24} />
-        <PrimaryButton />
+        <PrimaryButton handleClick={handleAddNewProduct} />
       </View>
     </SafeAreaView>
   );
