@@ -1,40 +1,55 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, TextInput} from 'react-native';
+import React, {Dispatch, SetStateAction, useState} from 'react';
+import {Pressable, StyleSheet, Text, TextInput} from 'react-native';
 
 type InputWithErrorProps = {
   label: string;
   placeholder: string;
   value: any;
-  onChangeText;
-  validateInput?: (value) => string;
+  editable?: boolean;
+  isDatePicker?: boolean;
+  onChangeText: Dispatch<SetStateAction<any>>;
+  onPress?: () => void;
+  validateInput?: (value: string) => string;
 };
 
 const InputWithError = ({
   label,
   placeholder,
   value,
+  editable,
+  isDatePicker,
   onChangeText,
+  onPress,
   validateInput,
 }: InputWithErrorProps): React.JSX.Element => {
-    const [touched, setTouched] = useState(false);
-    const [error, setError] = useState('');
+  const [touched, setTouched] = useState(false);
+  const [error, setError] = useState('');
 
-    const handleBlur = () => {
-        setTouched(true);
-        const validationError = validateInput ? validateInput(value) : '';
-        setError(validationError);
-      };
+  const handleBlur = () => {
+    setTouched(true);
+    const validationError = validateInput ? validateInput(value) : '';
+    setError(validationError);
+  };
 
   return (
     <>
       <Text style={styles.label}>{label}</Text>
-      <TextInput
-        style={[styles.input, error ? styles.inputError : null]}
-        placeholder={placeholder}
-        value={value}
-        onChangeText={onChangeText}
-        onBlur={handleBlur}
-      />
+      {isDatePicker && !editable ? (
+        <Pressable
+          style={[styles.input, error ? styles.inputError : null]}
+          onPress={onPress}>
+          <Text>{value}</Text>
+        </Pressable>
+      ) : (
+        <TextInput
+          style={[styles.input, error ? styles.inputError : null]}
+          placeholder={placeholder}
+          value={value}
+          onChangeText={onChangeText}
+          onBlur={handleBlur}
+          editable={editable}
+        />
+      )}
       {touched && error && <Text style={styles.textError}>{error}</Text>}
     </>
   );
@@ -47,7 +62,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#303034',
   },
-  // This input has the same styles than the one in the Search
   input: {
     height: 40,
     borderWidth: 1,

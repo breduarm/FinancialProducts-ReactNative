@@ -1,18 +1,28 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, ScrollView, TextInput} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import Spacer from '../components/Spacer';
 import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
 import Colors from '../theme/ColorSqueme';
 import InputWithError from '../components/InputWithError';
+import DatePicker from 'react-native-date-picker';
+import { formatDate } from '../utils';
 
 const NewProductScreen = (): React.JSX.Element => {
   const [id, setID] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [logo, setLogo] = useState('');
-  const [releaseDate, setReleaseDate] = useState('');
+  const [releaseDate, setReleaseDate] = useState(formatDate(new Date()));
+  const [releaseDateStr, setReleaseDateStr] = useState(new Date());
   const [reviewDate, setReviewDate] = useState('');
+  const [showDateModal, setShowDateModal] = useState(false);
 
   const validateID = (value: string) => {
     let error = '';
@@ -46,6 +56,14 @@ const NewProductScreen = (): React.JSX.Element => {
     return error;
   };
 
+  const validateLogo = (value: string) => {
+    let error = '';
+    if (value.trim() === '') {
+      error = 'Este campo es requerido';
+    }
+    return error;
+  };
+
   const validateReleaseDate = (value: string) => {
     const currentDate = new Date();
     const valueDate = new Date(value);
@@ -56,6 +74,33 @@ const NewProductScreen = (): React.JSX.Element => {
       error = 'La fecha debe ser igual o mayor a la fecha actual';
     }
     return error;
+  };
+
+  const handleModalReleaseDate = () => {
+    setShowDateModal(true);
+  }
+
+  const handleSubmit = () => {
+    const idError = validateID(id);
+    const nameError = validateID(id);
+    const descriptionError = validateID(id);
+    const logoError = validateID(id);
+    const releaseDateError = validateID(id);
+
+    if (
+      idError ||
+      nameError ||
+      descriptionError ||
+      logoError ||
+      releaseDateError
+    ) {
+      Alert.alert(
+        'Error al enviar el Formulario',
+        'Por favor, revise la información ingresada y corrija los errores antes enviar el formulario',
+      );
+    } else {
+      // TODO
+    }
   };
 
   const handleClick = () => {};
@@ -92,27 +137,43 @@ const NewProductScreen = (): React.JSX.Element => {
             validateInput={validateDescription}
           />
 
-          <View>
-            <Text style={styles.label}>Logo</Text>
-            <TextInput
-              style={[styles.input, styles.inputError]}
-              placeholder="Añada un logo"
-            />
-            <Text style={styles.textError}>Este campo es requerido!</Text>
-          </View>
+          <InputWithError
+            label="Logo"
+            placeholder="Agrege un logo"
+            value={logo}
+            onChangeText={setLogo}
+            validateInput={validateLogo}
+          />
 
           <InputWithError
             label="Fecha Liberación"
             placeholder="Ingrese la fecha de liberación"
             value={releaseDate}
+            editable={false}
+            isDatePicker={true}
             onChangeText={setReleaseDate}
+            onPress={handleModalReleaseDate}
             validateInput={validateReleaseDate}
+          />
+
+          <DatePicker
+            date={releaseDateStr}
+            onDateChange={setReleaseDateStr}
+            mode="date"
+            modal={true}
+            open={showDateModal}
+            onCancel={() => {setShowDateModal(false)}}
+            onConfirm={(date: Date) => {
+              setShowDateModal(false);
+              setReleaseDate(formatDate(date));
+            }}
           />
 
           <InputWithError
             label="Fecha Revisión"
             placeholder="Ingrese la fecha de revisión"
             value={reviewDate}
+            editable={false}
             onChangeText={setReviewDate}
           />
         </View>
@@ -120,7 +181,7 @@ const NewProductScreen = (): React.JSX.Element => {
 
       <Spacer value={24} />
 
-      <PrimaryButton handleClick={handleClick} />
+      <PrimaryButton handleClick={handleSubmit} />
 
       <Spacer value={12} />
 
@@ -142,29 +203,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#303034',
     marginBottom: 24,
-  },
-  label: {
-    marginVertical: 8,
-    fontWeight: '900',
-    fontSize: 12,
-    color: '#303034',
-  },
-  // This input has the same styles than the one in the Search
-  input: {
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ECECED',
-    padding: 10,
-    borderRadius: 4,
-  },
-  inputError: {
-    borderColor: '#C32B1F',
-  },
-  textError: {
-    marginVertical: 4,
-    fontWeight: '700',
-    fontSize: 10,
-    color: '#C32B1F',
   },
 });
 
