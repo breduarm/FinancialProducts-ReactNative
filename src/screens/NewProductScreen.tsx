@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -19,10 +19,15 @@ const NewProductScreen = (): React.JSX.Element => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [logo, setLogo] = useState('');
-  const [releaseDate, setReleaseDate] = useState(formatDate(new Date()));
-  const [releaseDateStr, setReleaseDateStr] = useState(new Date());
-  const [reviewDate, setReviewDate] = useState('');
+  const [releaseDate, setReleaseDate] = useState(new Date());
+  const [reviewDate, setReviewDate] = useState(new Date());
   const [showDateModal, setShowDateModal] = useState(false);
+
+  useEffect(() => {
+    const startDate = new Date(releaseDate)
+    const oneYearLater = startDate.setFullYear(startDate.getFullYear() + 1);
+    setReviewDate(new Date(oneYearLater))
+  }, [releaseDate]);
 
   const validateID = (value: string) => {
     let error = '';
@@ -148,31 +153,33 @@ const NewProductScreen = (): React.JSX.Element => {
           <InputWithError
             label="Fecha Liberación"
             placeholder="Ingrese la fecha de liberación"
-            value={releaseDate}
+            value={formatDate(releaseDate)}
             editable={false}
             isDatePicker={true}
-            onChangeText={setReleaseDate}
+            onChangeText={(value) => {
+              setReleaseDate(new Date(value));
+            }}
             onPress={handleModalReleaseDate}
             validateInput={validateReleaseDate}
           />
 
           <DatePicker
-            date={releaseDateStr}
-            onDateChange={setReleaseDateStr}
+            date={releaseDate}
+            onDateChange={setReleaseDate}
             mode="date"
             modal={true}
             open={showDateModal}
             onCancel={() => {setShowDateModal(false)}}
             onConfirm={(date: Date) => {
               setShowDateModal(false);
-              setReleaseDate(formatDate(date));
+              setReleaseDate(date);
             }}
           />
 
           <InputWithError
             label="Fecha Revisión"
             placeholder="Ingrese la fecha de revisión"
-            value={reviewDate}
+            value={formatDate(reviewDate)}
             editable={false}
             onChangeText={setReviewDate}
           />

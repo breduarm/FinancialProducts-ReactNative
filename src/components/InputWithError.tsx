@@ -1,10 +1,11 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
 import {Pressable, StyleSheet, Text, TextInput} from 'react-native';
+import { formatDate } from '../utils';
 
 type InputWithErrorProps = {
   label: string;
   placeholder: string;
-  value: any;
+  value: string;
   editable?: boolean;
   isDatePicker?: boolean;
   onChangeText: Dispatch<SetStateAction<any>>;
