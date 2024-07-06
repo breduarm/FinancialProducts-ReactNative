@@ -3,12 +3,28 @@ import {Routes} from '../enums/Routes';
 import axiosInstance from '../configs/axiosConfig';
 import ProductResponse from '../models/responses/ProductResponse';
 
+/**
+ * Fetches products from the server.
+ *
+ * @returns {Promise<ProductResponse[]>} A promise that resolves to an array of ProductResponse objects.
+ * @throws {Error} Will throw an error if the network request fails or the response data format is incorrect.
+ */
 export const fetchProducts = async (): Promise<ProductResponse[]> => {
   const url = Routes.FETCH_PRODUCTS;
-  const response: AxiosResponse = await axiosInstance.get(url);
-  const productsResponse: ProductResponse[] = response.data.data;
 
-  return productsResponse;
+  try {
+    const response: AxiosResponse = await axiosInstance.get(url);
+    // Validate the response structure
+    if (response && response.data && Array.isArray(response.data.data)) {
+      const productsResponse: ProductResponse[] = response.data.data;
+      return productsResponse;
+    } else {
+      throw new Error('Invalid response format');
+    }
+  } catch (e) {
+    console.error('Error fetching products:', e);
+    throw e;
+  }
 };
 
 export const addNewProduct = async (

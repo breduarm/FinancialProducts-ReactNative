@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View, Text, ScrollView, Alert} from 'react-native';
 import Spacer from '../components/Spacer';
 import PrimaryButton from '../components/PrimaryButton';
@@ -80,12 +80,14 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
     return error;
   };
 
-  const handleSubmitForm = () => {
+  const handleSubmitForm = useCallback(() => {
     const idError = validateID(id);
-    const nameError = validateID(id);
-    const descriptionError = validateID(id);
-    const logoError = validateID(id);
-    const releaseDateError = validateID(id);
+    const nameError = validateName(name);
+    const descriptionError = validateDescription(description);
+    const logoError = validateLogo(logo);
+    const releaseDateError = validateReleaseDate(
+      formatDateToLocale(releaseDate),
+    );
 
     if (
       idError ||
@@ -101,7 +103,7 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
     } else {
       createProduct();
     }
-  };
+  }, [id, name, description, logo, releaseDate]);
 
   const handleClearForm = () => {
     setID('');
