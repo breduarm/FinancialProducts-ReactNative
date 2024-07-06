@@ -112,9 +112,9 @@ const NewProductScreen = (): React.JSX.Element => {
   const addProduct = async () => {
     try {
       const data = {
-        id: '000002',
-        name: 'Second product',
-        description: 'This is the second product',
+        id: id,
+        name: name,
+        description: description,
         logo: 'https://www.visa.com.ec/dam/VCOM/regional/lac/SPA/Default/Pay%20With%20Visa/Tarjetas/visa-signature-400x225.jpg',
         date_release: formatDateToYearMonthDay(releaseDate),
         date_revision: formatDateToYearMonthDay(reviewDate),
