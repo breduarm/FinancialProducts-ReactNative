@@ -1,54 +1,60 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, Image} from 'react-native';
 import DeleteProductModal from '../components/DeleteProductModal';
 import Spacer from '../components/Spacer';
 import SecondaryButton from '../components/SecondaryButton';
 import ErrorButton from '../components/ErrorButton ';
+import ProductResponse from '../models/responses/ProductResponse';
+import Colors from '../theme/ColorSqueme';
 
-const DetailScreen = (): React.JSX.Element => {
+const DetailScreen = ({route}): React.JSX.Element => {
   const [showModal, setShowModal] = useState(false);
+
+  const product: ProductResponse = route.params;
 
   const handleDeleteProduct = () => {
     setShowModal(true);
   };
 
+  const handleClick = () => {};
+
   return (
     <View style={styles.content}>
       <DeleteProductModal showModal={showModal} setShowModal={setShowModal} />
       <View style={{flex: 1}}>
-        <Text style={styles.title}>ID: 123455</Text>
-        <Text style={styles.subtitle}>Información extra</Text>
+        <Text style={[styles.text, styles.title]}>ID: {product.id}</Text>
+        <Text style={[styles.text, styles.subtitle]}>Información extra</Text>
 
         <Spacer value={40} />
 
         <View style={styles.infoContainer}>
-          <Text style={styles.label}>Nombre</Text>
-          <Text style={styles.value}>Nombre registrado</Text>
+          <Text style={[styles.text, styles.label]}>Nombre</Text>
+          <Text style={[styles.text, styles.value]}>{product.name}</Text>
         </View>
 
         <View style={styles.infoContainer}>
-          <Text style={styles.label}>Descripción</Text>
-          <Text style={styles.value}>Descripción registrada</Text>
+          <Text style={[styles.text, styles.label]}>Descripción</Text>
+          <Text style={[styles.text, styles.value]}>{product.description}</Text>
         </View>
 
         <View style={styles.logoContainer}>
-          <Text style={styles.logoText}>Logo</Text>
-          <View style={styles.logo} />
+          <Text style={[styles.text, styles.logoText]}>Logo</Text>
+          <Image style={styles.logo} source={{uri: product.logo}}/>
         </View>
 
         <View style={styles.infoContainer}>
-          <Text style={styles.label}>Fecha liberación</Text>
-          <Text style={styles.value}>Fecha liberación registrada</Text>
+          <Text style={[styles.text, styles.label]}>Fecha liberación</Text>
+          <Text style={[styles.text, styles.value]}>{product.date_release}</Text>
         </View>
 
         <View style={styles.infoContainer}>
-          <Text style={styles.label}>Fecha revisión</Text>
-          <Text style={styles.value}>Fecha revisión registrada</Text>
+          <Text style={[styles.text, styles.label]}>Fecha revisión</Text>
+          <Text style={[styles.text, styles.value]}>{product.date_revision}</Text>
         </View>
       </View>
 
       <Spacer value={24} />
-      <SecondaryButton />
+      <SecondaryButton handleClick={handleClick} />
 
       <Spacer value={12} />
       <ErrorButton handleClick={handleDeleteProduct} />
@@ -63,13 +69,14 @@ const styles = StyleSheet.create({
     marginTop: 56,
     marginBottom: 32,
   },
+  text: {
+    color: Colors.primaryText
+  },
   title: {
-    color: '#303034',
     fontSize: 24,
     fontWeight: '700',
   },
   subtitle: {
-    color: '#303034',
     fontSize: 12,
   },
   infoContainer: {
@@ -78,11 +85,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   label: {
-    color: '#303034',
     flex: 1,
   },
   value: {
-    color: '#303034',
     fontWeight: '900',
   },
   logoContainer: {
@@ -92,14 +97,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   logoText: {
-    color: '#303034',
     alignSelf: 'flex-start',
   },
   logo: {
     width: 200,
     height: 120,
-    backgroundColor: '#FAE54C',
-    borderRadius: 6,
   },
 });
 

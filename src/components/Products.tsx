@@ -6,7 +6,7 @@ import Colors from '../theme/ColorSqueme';
 
 type ProductsProps = {
   products: ProductResponse[];
-  onItemPress: () => void;
+  onItemPress: (product: ProductResponse) => void;
 };
 
 const Products = ({
@@ -20,8 +20,7 @@ const Products = ({
       data={products}
       renderItem={({item}) => (
         <ProductItem
-          title={item.name}
-          description={item.description}
+          item={item}
           onItemPress={onItemPress}
         />
       )}

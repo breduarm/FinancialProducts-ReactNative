@@ -32,8 +32,8 @@ const HomeScreen = ({navigation}): React.JSX.Element => {
     getProducts();
   }, []);
 
-  const handleShowProductDetail = () => {
-    navigation.navigate(NavDirections.DETAIL);
+  const handleShowProductDetail = (product: ProductResponse) => {
+    navigation.navigate(NavDirections.DETAIL, product);
   }
 
   const handleAddNewProduct = () => {

@@ -1,23 +1,22 @@
 import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import Colors from '../theme/ColorSqueme';
+import ProductResponse from '../models/responses/ProductResponse';
 
 type ItemProps = {
-  title: string;
-  description: string;
-  onItemPress: () => void;
+  item: ProductResponse;
+  onItemPress: (item: ProductResponse) => void;
 };
 
 const ProductItem = ({
-  title,
-  description,
+  item,
   onItemPress,
 }: ItemProps): React.JSX.Element => (
   <>
-    <Pressable style={styles.itemContainer} onPress={onItemPress}>
+    <Pressable style={styles.itemContainer} onPress={() => {onItemPress(item)}}>
       <View style={styles.itemContent}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.description}>{description}</Text>
+        <Text style={styles.title}>{item.name}</Text>
+        <Text style={styles.description}>{item.description}</Text>
       </View>
       <View style={styles.icon} />
     </Pressable>
@@ -36,7 +35,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Colors.primaryText,
-    fontWeight: '900',
+    fontWeight: '700',
   },
   description: {
     fontSize: 12,
