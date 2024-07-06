@@ -1,10 +1,6 @@
 import React, {useEffect} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {SafeAreaView, StatusBar, StyleSheet, View} from 'react-native';
-import Header from './components/Header';
 import {AxiosResponse} from 'axios';
 import axiosInstance from './configs/axiosConfig';
-import Description from './components/Description';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AppNavigator from './navigation/AppNavigator';
 

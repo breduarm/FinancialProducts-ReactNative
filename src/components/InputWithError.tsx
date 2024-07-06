@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
 import {Pressable, StyleSheet, Text, TextInput} from 'react-native';
-import { formatDate } from '../utils';
+import { formatDateToLocale } from '../utils';
 
 type InputWithErrorProps = {
   label: string;

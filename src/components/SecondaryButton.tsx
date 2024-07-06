@@ -1,9 +1,13 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableHighlight} from 'react-native';
 
-const SecondaryButton = (): React.JSX.Element => {
+type ButtonProps = {
+  handleClick: () => void,
+}
+
+const SecondaryButton = ({handleClick}: ButtonProps): React.JSX.Element => {
   return (
-    <TouchableHighlight style={styles.container}>
+    <TouchableHighlight style={styles.container} onPress={handleClick}>
       <Text style={styles.text}> Reiniciar </Text>
     </TouchableHighlight>
   );

@@ -1,18 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  Alert,
-} from 'react-native';
+import {StyleSheet, View, Text, ScrollView, Alert} from 'react-native';
 import Spacer from '../components/Spacer';
 import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
 import Colors from '../theme/ColorSqueme';
 import InputWithError from '../components/InputWithError';
 import DatePicker from 'react-native-date-picker';
-import { formatDate } from '../utils';
+import {formatDateToLocale, formatDateToYearMonthDay} from '../utils';
+import {Routes} from '../enums/Routes';
+import {AxiosResponse} from 'axios';
+import axiosInstance from '../configs/axiosConfig';
 
 const NewProductScreen = (): React.JSX.Element => {
   const [id, setID] = useState('');
@@ -24,9 +21,9 @@ const NewProductScreen = (): React.JSX.Element => {
   const [showDateModal, setShowDateModal] = useState(false);
 
   useEffect(() => {
-    const startDate = new Date(releaseDate)
+    const startDate = new Date(releaseDate);
     const oneYearLater = startDate.setFullYear(startDate.getFullYear() + 1);
-    setReviewDate(new Date(oneYearLater))
+    setReviewDate(new Date(oneYearLater));
   }, [releaseDate]);
 
   const validateID = (value: string) => {
@@ -81,11 +78,7 @@ const NewProductScreen = (): React.JSX.Element => {
     return error;
   };
 
-  const handleModalReleaseDate = () => {
-    setShowDateModal(true);
-  }
-
-  const handleSubmit = () => {
+  const handleSubmitForm = () => {
     const idError = validateID(id);
     const nameError = validateID(id);
     const descriptionError = validateID(id);
@@ -104,11 +97,41 @@ const NewProductScreen = (): React.JSX.Element => {
         'Por favor, revise la información ingresada y corrija los errores antes enviar el formulario',
       );
     } else {
-      // TODO
+      addProduct();
     }
   };
 
-  const handleClick = () => {};
+  const handleClearForm = () => {
+    setID('');
+    setName('');
+    setDescription('');
+    setLogo('');
+    setReleaseDate(new Date());
+  };
+
+  const addProduct = async () => {
+    try {
+      const data = {
+        id: '000002',
+        name: 'Second product',
+        description: 'This is the second product',
+        logo: 'https://www.visa.com.ec/dam/VCOM/regional/lac/SPA/Default/Pay%20With%20Visa/Tarjetas/visa-signature-400x225.jpg',
+        date_release: formatDateToYearMonthDay(releaseDate),
+        date_revision: formatDateToYearMonthDay(reviewDate),
+      };
+
+      const url = Routes.PRODUCTS;
+      const response: AxiosResponse = await axiosInstance.post(url, data);
+      const dataResponse = response.data;
+
+      console.log('==== dataResponse: ', JSON.stringify(dataResponse));
+    } catch (e) {
+      console.error(
+        'There was a problem trying to create a financial product: ',
+        e,
+      );
+    }
+  };
 
   return (
     <View style={styles.content}>
@@ -153,13 +176,15 @@ const NewProductScreen = (): React.JSX.Element => {
           <InputWithError
             label="Fecha Liberación"
             placeholder="Ingrese la fecha de liberación"
-            value={formatDate(releaseDate)}
+            value={formatDateToLocale(releaseDate)}
             editable={false}
             isDatePicker={true}
-            onChangeText={(value) => {
+            onChangeText={value => {
               setReleaseDate(new Date(value));
             }}
-            onPress={handleModalReleaseDate}
+            onPress={() => {
+              setShowDateModal(true);
+            }}
             validateInput={validateReleaseDate}
           />
 
@@ -169,7 +194,9 @@ const NewProductScreen = (): React.JSX.Element => {
             mode="date"
             modal={true}
             open={showDateModal}
-            onCancel={() => {setShowDateModal(false)}}
+            onCancel={() => {
+              setShowDateModal(false);
+            }}
             onConfirm={(date: Date) => {
               setShowDateModal(false);
               setReleaseDate(date);
@@ -179,7 +206,7 @@ const NewProductScreen = (): React.JSX.Element => {
           <InputWithError
             label="Fecha Revisión"
             placeholder="Ingrese la fecha de revisión"
-            value={formatDate(reviewDate)}
+            value={formatDateToLocale(reviewDate)}
             editable={false}
             onChangeText={setReviewDate}
           />
@@ -188,11 +215,11 @@ const NewProductScreen = (): React.JSX.Element => {
 
       <Spacer value={24} />
 
-      <PrimaryButton handleClick={handleSubmit} />
+      <PrimaryButton handleClick={handleSubmitForm} />
 
       <Spacer value={12} />
 
-      <SecondaryButton />
+      <SecondaryButton handleClick={handleClearForm} />
     </View>
   );
 };
