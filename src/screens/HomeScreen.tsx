@@ -11,7 +11,28 @@ import axiosInstance from '../configs/axiosConfig';
 import ProductResponse from '../models/responses/ProductResponse';
 
 const HomeScreen = ({navigation}): React.JSX.Element => {
+  const [searchText, setSearchText] = useState('');
   const [products, setProducts] = useState<ProductResponse[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<ProductResponse[]>(
+    [],
+  );
+
+  useEffect(() => {
+    if (searchText === '') {
+      setFilteredProducts(products);
+    } else {
+      const newFilteredProducts = products.filter(item => {
+        const textToCompare = searchText.toLowerCase();
+        const nameLowerCase = item.name.toLowerCase();
+        const descLowerCase = item.description.toLowerCase();
+        return (
+          nameLowerCase.includes(textToCompare) ||
+          descLowerCase.includes(textToCompare)
+        );
+      });
+      setFilteredProducts(newFilteredProducts);
+    }
+  }, [searchText, products]);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -20,7 +41,7 @@ const HomeScreen = ({navigation}): React.JSX.Element => {
         const response: AxiosResponse = await axiosInstance.get(url);
         const productsResponse: ProductResponse[] = response.data.data;
 
-        setProducts(productsResponse)
+        setProducts(productsResponse);
       } catch (e) {
         console.error(
           'There was a problem trying to get financial products: ',
@@ -34,7 +55,7 @@ const HomeScreen = ({navigation}): React.JSX.Element => {
 
   const handleShowProductDetail = (product: ProductResponse) => {
     navigation.navigate(NavDirections.DETAIL, product);
-  }
+  };
 
   const handleAddNewProduct = () => {
     navigation.navigate(NavDirections.NEW_PRODUCT);
@@ -42,9 +63,12 @@ const HomeScreen = ({navigation}): React.JSX.Element => {
 
   return (
     <View style={styles.content}>
-      <Search />
+      <Search searchText={searchText} setSearchText={setSearchText} />
       <Spacer value={44} />
-      <Products products={products} onItemPress={handleShowProductDetail}/>
+      <Products
+        products={filteredProducts}
+        onItemPress={handleShowProductDetail}
+      />
       <Spacer value={24} />
       <PrimaryButton handleClick={handleAddNewProduct} />
     </View>
