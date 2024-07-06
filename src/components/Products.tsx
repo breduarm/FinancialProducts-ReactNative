@@ -1,15 +1,29 @@
 import React from 'react';
 import {StyleSheet, FlatList} from 'react-native';
 import ProductItem from './ProductItem';
+import ProductResponse from '../models/responses/ProductResponse';
+import Colors from '../theme/ColorSqueme';
 
-const Products = (): React.JSX.Element => {
+type ProductsProps = {
+  products: ProductResponse[];
+  onItemPress: () => void;
+};
+
+const Products = ({
+  products,
+  onItemPress,
+}: ProductsProps): React.JSX.Element => {
   return (
     <FlatList
       showsVerticalScrollIndicator={false}
       style={styles.listContainer}
-      data={DATA}
+      data={products}
       renderItem={({item}) => (
-        <ProductItem title={item.title} description={item.description} />
+        <ProductItem
+          title={item.name}
+          description={item.description}
+          onItemPress={onItemPress}
+        />
       )}
       keyExtractor={item => item.id}
     />
@@ -19,7 +33,7 @@ const Products = (): React.JSX.Element => {
 const styles = StyleSheet.create({
   listContainer: {
     borderWidth: 1,
-    borderColor: '#ECECED',
+    borderColor: Colors.lightGray,
     borderRadius: 6,
   },
 });

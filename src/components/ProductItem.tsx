@@ -1,17 +1,26 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
+import Colors from '../theme/ColorSqueme';
 
-type ItemProps = {title: string; description: string};
+type ItemProps = {
+  title: string;
+  description: string;
+  onItemPress: () => void;
+};
 
-const ProductItem = ({title, description}: ItemProps): React.JSX.Element => (
+const ProductItem = ({
+  title,
+  description,
+  onItemPress,
+}: ItemProps): React.JSX.Element => (
   <>
-    <View style={styles.itemContainer}>
+    <Pressable style={styles.itemContainer} onPress={onItemPress}>
       <View style={styles.itemContent}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
       </View>
       <View style={styles.icon} />
-    </View>
+    </Pressable>
     <View style={styles.divider} />
   </>
 );
@@ -26,6 +35,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
+    color: Colors.primaryText,
     fontWeight: '900',
   },
   description: {
@@ -34,13 +44,13 @@ const styles = StyleSheet.create({
   icon: {
     height: 16,
     width: 8,
-    backgroundColor: '#C9C9CA',
+    backgroundColor: Colors.primaryGray,
   },
   divider: {
     height: 1,
     width: '98%',
     alignSelf: 'center',
-    backgroundColor: '#ECECED',
+    backgroundColor: Colors.lightGray,
   },
 });
 

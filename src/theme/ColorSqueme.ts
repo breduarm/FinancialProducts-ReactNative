@@ -5,6 +5,8 @@ const Colors = {
     onSecondary: '#2B3B69',
     error: '#C32B1F',
     onError: '#FFFFFF',
+    lightGray: '#ECECED',
+    primaryGray: '#C9C9CA',
     primaryText: '#303034',
     background: '#FFFFFF',
     onBackground: '#303034',
