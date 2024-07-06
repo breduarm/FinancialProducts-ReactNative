@@ -1,9 +1,12 @@
-import { formatDateToLocale, formatDateToYearMonthDay } from "../../src/utils";
+import {
+  formatDateToLocale,
+  formatDateToYearMonthDay,
+} from '../../src/utils/dateUtils';
 
 describe('formatDateToLocale', () => {
   it('should meet the expected format es-ES', () => {
     // Expected format
-    const formatRegEx = /^\d{2}\/\d{2}\/\d{4}$/ // DD/MM/YYYY
+    const formatRegEx = /^\d{2}\/\d{2}\/\d{4}$/; // DD/MM/YYYY
     // Example date
     const date = new Date();
 
@@ -13,7 +16,7 @@ describe('formatDateToLocale', () => {
 
   it('should meet the expected format es-ES with a valid string date', () => {
     // Expected format
-    const formatRegEx = /^\d{2}\/\d{2}\/\d{4}$/ // DD/MM/YYYY
+    const formatRegEx = /^\d{2}\/\d{2}\/\d{4}$/; // DD/MM/YYYY
     // Example date
     const date = new Date('2024-07-06T12:00:00Z');
 
@@ -23,12 +26,12 @@ describe('formatDateToLocale', () => {
 
   it('should format a valid date to locale correctly', () => {
     // Expected date in DD/MM/YYYY es-ES locale format
-    const expectedDateStr = '06/07/2024'
+    const expectedDateStr = '06/07/2024';
     // Example date
     const date = new Date('2024-07-06T12:00:00Z');
 
     const formattedDate = formatDateToLocale(date);
-    expect(formattedDate).toBe(expectedDateStr); 
+    expect(formattedDate).toBe(expectedDateStr);
   });
 
   it('should throws an error for invalid date', () => {
@@ -40,7 +43,7 @@ describe('formatDateToLocale', () => {
 describe('formatDateToYearMonthDay', () => {
   it('should meet the expected format YYYY-MM-DD', () => {
     // Expected format
-    const formatRegEx = /^\d{4}-\d{2}-\d{2}$/ // YYYY-MM-DD
+    const formatRegEx = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD
     // Example date
     const date = new Date();
 
@@ -50,7 +53,7 @@ describe('formatDateToYearMonthDay', () => {
 
   it('should meet the expected format YYYY-MM-DD with a valid string date', () => {
     // Expected format
-    const formatRegEx = /^\d{4}-\d{2}-\d{2}$/ // YYYY-MM-DD
+    const formatRegEx = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD
     // Example date
     const date = new Date('2024-07-06T12:00:00Z');
 
@@ -60,16 +63,16 @@ describe('formatDateToYearMonthDay', () => {
 
   it('should formats a valid string date correctly', () => {
     // Expected date in YYYY-MM-DD format
-    const expectedDateStr = '2024-07-06'
+    const expectedDateStr = '2024-07-06';
     // Example date
     const date = new Date('2024-07-06T12:00:00Z');
-    
+
     expect(formatDateToYearMonthDay(date)).toBe(expectedDateStr);
   });
 
   it('should format end of year date correctly', () => {
     // Expected date in YYYY-MM-DD format
-    const expectedDateStr = '2024-12-31'
+    const expectedDateStr = '2024-12-31';
     // Example date
     const date = new Date('2024-12-31T12:00:00Z');
 

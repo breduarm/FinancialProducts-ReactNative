@@ -6,10 +6,10 @@ import SecondaryButton from '../components/SecondaryButton';
 import Colors from '../theme/ColorSqueme';
 import InputWithError from '../components/InputWithError';
 import DatePicker from 'react-native-date-picker';
-import {formatDateToLocale, formatDateToYearMonthDay} from '../utils';
 import ProductResponse from '../models/responses/ProductResponse';
 import {addNewProduct} from '../services/ProductService';
 import useProductsContext from '../hooks/useProductsContext';
+import { formatDateToLocale, formatDateToYearMonthDay } from '../utils/dateUtils';
 
 const ProductFormScreen = ({navigation}): React.JSX.Element => {
   const [id, setID] = useState('');
