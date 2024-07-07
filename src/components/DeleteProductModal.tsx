@@ -7,21 +7,25 @@ import SecondaryButton from './SecondaryButton';
 type DeleteProductModalProps = {
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
+  onConfirmDeleteProduct: () => void,
 };
 
 const DeleteProductModal = ({
   showModal,
   setShowModal,
+  onConfirmDeleteProduct,
 }: DeleteProductModalProps): React.JSX.Element => {
+  const closeModal = () => {
+    setShowModal(false);
+  }
+
   return (
     <Modal animationType="slide" transparent={true} visible={showModal}>
       <View style={styles.modalContainer}>
         <View style={styles.modalView}>
           <Pressable
             style={styles.modalCloseButton}
-            onPress={() => {
-              setShowModal(false);
-            }}>
+            onPress={closeModal}>
             <Text style={{fontSize: 20, fontWeight: '900'}}>X</Text>
           </Pressable>
           <View style={styles.divider} />
@@ -31,9 +35,9 @@ const DeleteProductModal = ({
           <View style={styles.divider} />
 
           <View style={styles.modalButtonsContainer}>
-            <PrimaryButton />
+            <PrimaryButton handleClick={onConfirmDeleteProduct} />
             <Spacer value={12} />
-            <SecondaryButton />
+            <SecondaryButton handleClick={closeModal} />
           </View>
         </View>
       </View>

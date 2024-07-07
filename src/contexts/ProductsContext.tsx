@@ -1,10 +1,11 @@
 import React, {ReactNode, createContext, useEffect, useState} from 'react';
 import ProductResponse from '../models/responses/ProductResponse';
-import { fetchProducts } from '../services/ProductService';
+import {fetchProducts} from '../services/ProductService';
 
 type ProductsContextProps = {
   products: ProductResponse[];
   updateProducts: (newProduct: ProductResponse) => void;
+  deleteProduct: (id: string) => void;
 };
 
 export const ProductsContext = createContext<ProductsContextProps | undefined>(
@@ -22,7 +23,7 @@ export const ProductsProvider = ({children}: ProductsProviderProps) => {
     const fetchProductsData = async () => {
       try {
         const productsResponse: ProductResponse[] = await fetchProducts();
-        setProducts(productsResponse)
+        setProducts(productsResponse);
       } catch (e) {
         console.error(
           'There was a problem trying to get financial products: ',
@@ -38,8 +39,13 @@ export const ProductsProvider = ({children}: ProductsProviderProps) => {
     setProducts([...products, newProduct]);
   };
 
+  const deleteProduct = (id: string) => {
+    const updatedProducts = products.filter(product => product.id !== id);
+    setProducts(updatedProducts);
+  };
+
   return (
-    <ProductsContext.Provider value={{products, updateProducts}}>
+    <ProductsContext.Provider value={{products, updateProducts, deleteProduct}}>
       {children}
     </ProductsContext.Provider>
   );

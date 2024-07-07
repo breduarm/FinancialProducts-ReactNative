@@ -6,21 +6,44 @@ import SecondaryButton from '../components/SecondaryButton';
 import ErrorButton from '../components/ErrorButton ';
 import ProductResponse from '../models/responses/ProductResponse';
 import Colors from '../theme/ColorSqueme';
+import {deleteProductById} from '../services/ProductService';
+import useProductsContext from '../hooks/useProductsContext';
 
-const DetailScreen = ({route}): React.JSX.Element => {
+const DetailScreen = ({route, navigation}): React.JSX.Element => {
   const [showModal, setShowModal] = useState(false);
 
   const product: ProductResponse = route.params;
-
-  const handleDeleteProduct = () => {
-    setShowModal(true);
-  };
+  const {deleteProduct} = useProductsContext();
 
   const handleClick = () => {};
 
+  const confirmDeleteProduct = async () => {
+    setShowModal(false);
+    const id = '00012';
+    try {
+      const messageResponse: string = await deleteProductById(id);
+      console.info(
+        '==== I: confirmDeleteProduct messageResponse = ',
+        messageResponse,
+      );
+
+      deleteProduct(id);
+      navigation.goBack();
+    } catch (e) {
+      console.error(
+        'There was a problem trying to delete a financial product id: ' + id,
+        e,
+      );
+    }
+  };
+
   return (
     <View style={styles.content}>
-      <DeleteProductModal showModal={showModal} setShowModal={setShowModal} />
+      <DeleteProductModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        onConfirmDeleteProduct={confirmDeleteProduct}
+      />
       <View style={{flex: 1}}>
         <Text style={[styles.text, styles.title]}>ID: {product.id}</Text>
         <Text style={[styles.text, styles.subtitle]}>Información extra</Text>
@@ -39,17 +62,21 @@ const DetailScreen = ({route}): React.JSX.Element => {
 
         <View style={styles.logoContainer}>
           <Text style={[styles.text, styles.logoText]}>Logo</Text>
-          <Image style={styles.logo} source={{uri: product.logo}}/>
+          <Image style={styles.logo} source={{uri: product.logo}} />
         </View>
 
         <View style={styles.infoContainer}>
           <Text style={[styles.text, styles.label]}>Fecha liberación</Text>
-          <Text style={[styles.text, styles.value]}>{product.date_release}</Text>
+          <Text style={[styles.text, styles.value]}>
+            {product.date_release}
+          </Text>
         </View>
 
         <View style={styles.infoContainer}>
           <Text style={[styles.text, styles.label]}>Fecha revisión</Text>
-          <Text style={[styles.text, styles.value]}>{product.date_revision}</Text>
+          <Text style={[styles.text, styles.value]}>
+            {product.date_revision}
+          </Text>
         </View>
       </View>
 
@@ -57,7 +84,11 @@ const DetailScreen = ({route}): React.JSX.Element => {
       <SecondaryButton handleClick={handleClick} />
 
       <Spacer value={12} />
-      <ErrorButton handleClick={handleDeleteProduct} />
+      <ErrorButton
+        handleClick={() => {
+          setShowModal(true);
+        }}
+      />
     </View>
   );
 };
@@ -70,7 +101,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   text: {
-    color: Colors.primaryText
+    color: Colors.primaryText,
   },
   title: {
     fontSize: 24,

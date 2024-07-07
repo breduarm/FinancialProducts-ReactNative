@@ -1,5 +1,5 @@
 export enum Routes {
-    PRODUCTS = '/bp/products',
-    PRODUCTS_ID = '/bp/products/:id',
-    PRODUCTS_VERIFICATION_ID = '/bp/products/verification/:id',
+  FETCH_PRODUCTS = '/bp/products',
+  ADD_NEW_PRODUCT = '/bp/products',
+  DELETE_PRODUCT = '/bp/products/',
 }
