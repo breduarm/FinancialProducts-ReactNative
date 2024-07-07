@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Text, ScrollView, Alert} from 'react-native';
 import Spacer from '../components/Spacer';
 import PrimaryButton from '../components/PrimaryButton';
@@ -7,11 +7,11 @@ import Colors from '../theme/ColorSqueme';
 import InputWithError from '../components/InputWithError';
 import DatePicker from 'react-native-date-picker';
 import {formatDateToLocale, formatDateToYearMonthDay} from '../utils';
-import {Routes} from '../enums/Routes';
-import {AxiosResponse} from 'axios';
-import axiosInstance from '../configs/axiosConfig';
+import ProductResponse from '../models/responses/ProductResponse';
+import {addNewProduct} from '../services/ProductService';
+import useProductsContext from '../hooks/useProductsContext';
 
-const ProductFormScreen = ({route, navigation}): React.JSX.Element => {
+const ProductFormScreen = ({navigation}): React.JSX.Element => {
   const [id, setID] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -20,7 +20,7 @@ const ProductFormScreen = ({route, navigation}): React.JSX.Element => {
   const [reviewDate, setReviewDate] = useState(new Date());
   const [showDateModal, setShowDateModal] = useState(false);
 
-  const setShouldFetchProducts: Dispatch<SetStateAction<boolean>> = route.params
+  const {updateProducts} = useProductsContext();
 
   useEffect(() => {
     const startDate = new Date(releaseDate);
@@ -99,7 +99,7 @@ const ProductFormScreen = ({route, navigation}): React.JSX.Element => {
         'Por favor, revise la información ingresada y corrija los errores antes enviar el formulario',
       );
     } else {
-      addNewProduct();
+      createProduct();
     }
   };
 
@@ -111,23 +111,19 @@ const ProductFormScreen = ({route, navigation}): React.JSX.Element => {
     setReleaseDate(new Date());
   };
 
-  const addNewProduct = async () => {
+  const createProduct = async () => {
     try {
-      const data = {
-        id: id,
-        name: name,
-        description: description,
-        logo: 'https://www.visa.com.ec/dam/VCOM/regional/lac/SPA/Default/Pay%20With%20Visa/Tarjetas/visa-signature-400x225.jpg',
-        date_release: formatDateToYearMonthDay(releaseDate),
-        date_revision: formatDateToYearMonthDay(reviewDate),
-      };
-
-      const url = Routes.PRODUCTS;
-      const response: AxiosResponse = await axiosInstance.post(url, data);
-      const dataResponse = response.data;
-
-      setShouldFetchProducts(true);
-      navigation.goBack()
+      const newProduct = new ProductResponse(
+        id,
+        name,
+        description,
+        logo,
+        formatDateToYearMonthDay(releaseDate),
+        formatDateToYearMonthDay(reviewDate),
+      );
+      const productResponse = await addNewProduct(newProduct);
+      updateProducts(productResponse);
+      navigation.goBack();
     } catch (e) {
       console.error(
         'There was a problem trying to create a financial product: ',
