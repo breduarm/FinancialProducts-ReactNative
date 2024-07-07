@@ -8,6 +8,7 @@ const Colors = {
     lightGray: '#ECECED',
     primaryGray: '#C9C9CA',
     primaryText: '#303034',
+    secondaryText: '#2B3B69',
     background: '#FFFFFF',
     onBackground: '#303034',
   };

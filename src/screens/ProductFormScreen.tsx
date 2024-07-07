@@ -1,15 +1,22 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View, Text, ScrollView, Alert} from 'react-native';
 import Spacer from '../components/Spacer';
-import PrimaryButton from '../components/PrimaryButton';
-import SecondaryButton from '../components/SecondaryButton';
 import Colors from '../theme/ColorSqueme';
 import InputWithError from '../components/InputWithError';
 import DatePicker from 'react-native-date-picker';
 import ProductResponse from '../models/responses/ProductResponse';
 import {addNewProduct} from '../services/ProductService';
 import useProductsContext from '../hooks/useProductsContext';
-import { formatDateToLocale, formatDateToYearMonthDay } from '../utils/dateUtils';
+import {formatDateToLocale, formatDateToYearMonthDay} from '../utils/dateUtils';
+import {
+  validateDescription,
+  validateID,
+  validateLogo,
+  validateName,
+  validateReleaseDate,
+} from '../utils/formUtils';
+import {ButtonStyles} from '../enums/ButtonStyles';
+import CustomButton from '../components/CustomButton';
 
 const ProductFormScreen = ({navigation}): React.JSX.Element => {
   const [id, setID] = useState('');
@@ -27,58 +34,6 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
     const oneYearLater = startDate.setFullYear(startDate.getFullYear() + 1);
     setReviewDate(new Date(oneYearLater));
   }, [releaseDate]);
-
-  const validateID = (value: string) => {
-    let error = '';
-    if (value.trim() === '') {
-      error = 'Este campo es requerido';
-    } else if (value.length < 3 || value.length > 10) {
-      error = 'Mínimo 3 caracteres, máximo 10';
-    } else if (false) {
-      error = 'ID no válido';
-    }
-    return error;
-  };
-
-  const validateName = (value: string) => {
-    let error = '';
-    if (value.trim() === '') {
-      error = 'Este campo es requerido';
-    } else if (value.length < 5 || value.length > 100) {
-      error = 'Mínimo 5 caracteres, máximo 100';
-    }
-    return error;
-  };
-
-  const validateDescription = (value: string) => {
-    let error = '';
-    if (value.trim() === '') {
-      error = 'Este campo es requerido';
-    } else if (value.length < 10 || value.length > 200) {
-      error = 'Mínimo 10 caracteres, máximo 200';
-    }
-    return error;
-  };
-
-  const validateLogo = (value: string) => {
-    let error = '';
-    if (value.trim() === '') {
-      error = 'Este campo es requerido';
-    }
-    return error;
-  };
-
-  const validateReleaseDate = (value: string) => {
-    const currentDate = new Date();
-    const valueDate = new Date(value);
-    let error = '';
-    if (!valueDate) {
-      error = 'Este campo es requerido';
-    } else if (valueDate.valueOf() < currentDate.setHours(0, 0, 0, 0)) {
-      error = 'La fecha debe ser igual o mayor a la fecha actual';
-    }
-    return error;
-  };
 
   const handleSubmitForm = useCallback(() => {
     const idError = validateID(id);
@@ -216,11 +171,19 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
 
       <Spacer value={24} />
 
-      <PrimaryButton handleClick={handleSubmitForm} />
+      <CustomButton
+        label="Enviar"
+        buttonStyle={ButtonStyles.Primary}
+        handleClick={handleSubmitForm}
+      />
 
       <Spacer value={12} />
 
-      <SecondaryButton handleClick={handleClearForm} />
+      <CustomButton
+        label="Reiniciar"
+        buttonStyle={ButtonStyles.Secondary}
+        handleClick={handleClearForm}
+      />
     </View>
   );
 };

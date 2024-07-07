@@ -1,14 +1,14 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {Modal, Pressable, StyleSheet, View, Text} from 'react-native';
-import PrimaryButton from './PrimaryButton';
+import {Modal, Pressable, StyleSheet, View, Text, Button} from 'react-native';
 import Spacer from './Spacer';
-import SecondaryButton from './SecondaryButton';
 import Colors from '../theme/ColorSqueme';
+import CustomButton from './CustomButton';
+import {ButtonStyles} from '../enums/ButtonStyles';
 
 type DeleteProductModalProps = {
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
-  onConfirmDeleteProduct: () => void,
+  onConfirmDeleteProduct: () => void;
 };
 
 const DeleteProductModal = ({
@@ -18,15 +18,13 @@ const DeleteProductModal = ({
 }: DeleteProductModalProps): React.JSX.Element => {
   const closeModal = () => {
     setShowModal(false);
-  }
+  };
 
   return (
     <Modal animationType="slide" transparent={true} visible={showModal}>
       <View style={styles.modalContainer}>
         <View style={styles.modalView}>
-          <Pressable
-            style={styles.modalCloseButton}
-            onPress={closeModal}>
+          <Pressable style={styles.modalCloseButton} onPress={closeModal}>
             <Text style={{fontSize: 20, fontWeight: '900'}}>X</Text>
           </Pressable>
           <View style={styles.divider} />
@@ -36,9 +34,17 @@ const DeleteProductModal = ({
           <View style={styles.divider} />
 
           <View style={styles.modalButtonsContainer}>
-            <PrimaryButton handleClick={onConfirmDeleteProduct} />
+            <CustomButton
+              label="Confirmar"
+              buttonStyle={ButtonStyles.Primary}
+              handleClick={onConfirmDeleteProduct}
+            />
             <Spacer value={12} />
-            <SecondaryButton handleClick={closeModal} />
+            <CustomButton
+              label="Cancelar"
+              buttonStyle={ButtonStyles.Secondary}
+              handleClick={closeModal}
+            />
           </View>
         </View>
       </View>

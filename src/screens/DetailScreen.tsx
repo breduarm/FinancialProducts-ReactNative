@@ -2,12 +2,12 @@ import React, {useState} from 'react';
 import {StyleSheet, View, Text, Image} from 'react-native';
 import DeleteProductModal from '../components/DeleteProductModal';
 import Spacer from '../components/Spacer';
-import SecondaryButton from '../components/SecondaryButton';
-import ErrorButton from '../components/ErrorButton ';
 import ProductResponse from '../models/responses/ProductResponse';
 import Colors from '../theme/ColorSqueme';
 import {deleteProductById} from '../services/ProductService';
 import useProductsContext from '../hooks/useProductsContext';
+import CustomButton from '../components/CustomButton';
+import {ButtonStyles} from '../enums/ButtonStyles';
 
 const DetailScreen = ({route, navigation}): React.JSX.Element => {
   const [showModal, setShowModal] = useState(false);
@@ -15,7 +15,9 @@ const DetailScreen = ({route, navigation}): React.JSX.Element => {
   const product: ProductResponse = route.params;
   const {deleteProduct} = useProductsContext();
 
-  const handleClick = () => {};
+  const handleEditProduct = () => {
+    // TODO implement edit functionality
+  };
 
   const confirmDeleteProduct = async () => {
     setShowModal(false);
@@ -25,7 +27,8 @@ const DetailScreen = ({route, navigation}): React.JSX.Element => {
       navigation.goBack();
     } catch (e) {
       console.error(
-        'There was a problem trying to delete a financial product id: ' + product.id,
+        'There was a problem trying to delete a financial product id: ' +
+          product.id,
         e,
       );
     }
@@ -75,10 +78,16 @@ const DetailScreen = ({route, navigation}): React.JSX.Element => {
       </View>
 
       <Spacer value={24} />
-      <SecondaryButton handleClick={handleClick} />
+      <CustomButton
+        label="Editar"
+        buttonStyle={ButtonStyles.Secondary}
+        handleClick={handleEditProduct}
+      />
 
       <Spacer value={12} />
-      <ErrorButton
+      <CustomButton
+        label="Eliminar"
+        buttonStyle={ButtonStyles.Error}
         handleClick={() => {
           setShowModal(true);
         }}

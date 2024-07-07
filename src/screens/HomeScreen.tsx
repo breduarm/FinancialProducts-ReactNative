@@ -3,11 +3,12 @@ import {StyleSheet, View} from 'react-native';
 import Spacer from '../components/Spacer';
 import Search from '../components/Search';
 import Products from '../components/Products';
-import PrimaryButton from '../components/PrimaryButton';
 import {NavDirections} from '../enums/NavDirections';
 import Colors from '../theme/ColorSqueme';
 import ProductResponse from '../models/responses/ProductResponse';
 import useProductsContext from '../hooks/useProductsContext';
+import CustomButton from '../components/CustomButton';
+import { ButtonStyles } from '../enums/ButtonStyles';
 
 const HomeScreen = ({navigation}): React.JSX.Element => {
   const [searchText, setSearchText] = useState('');
@@ -51,7 +52,7 @@ const HomeScreen = ({navigation}): React.JSX.Element => {
         onItemPress={handleShowProductDetail}
       />
       <Spacer value={24} />
-      <PrimaryButton handleClick={handleAddNewProduct} />
+      <CustomButton label='Agregar' buttonStyle={ButtonStyles.Primary} handleClick={handleAddNewProduct} />
     </View>
   );
 };
