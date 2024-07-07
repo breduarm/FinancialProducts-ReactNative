@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {StyleSheet, View, Text, ScrollView, Alert} from 'react-native';
 import Spacer from '../components/Spacer';
 import PrimaryButton from '../components/PrimaryButton';
@@ -11,7 +11,7 @@ import {Routes} from '../enums/Routes';
 import {AxiosResponse} from 'axios';
 import axiosInstance from '../configs/axiosConfig';
 
-const NewProductScreen = (): React.JSX.Element => {
+const NewProductScreen = ({route, navigation}): React.JSX.Element => {
   const [id, setID] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -19,6 +19,8 @@ const NewProductScreen = (): React.JSX.Element => {
   const [releaseDate, setReleaseDate] = useState(new Date());
   const [reviewDate, setReviewDate] = useState(new Date());
   const [showDateModal, setShowDateModal] = useState(false);
+
+  const setShouldFetchProducts: Dispatch<SetStateAction<boolean>> = route.params
 
   useEffect(() => {
     const startDate = new Date(releaseDate);
@@ -97,7 +99,7 @@ const NewProductScreen = (): React.JSX.Element => {
         'Por favor, revise la información ingresada y corrija los errores antes enviar el formulario',
       );
     } else {
-      addProduct();
+      addNewProduct();
     }
   };
 
@@ -109,7 +111,7 @@ const NewProductScreen = (): React.JSX.Element => {
     setReleaseDate(new Date());
   };
 
-  const addProduct = async () => {
+  const addNewProduct = async () => {
     try {
       const data = {
         id: id,
@@ -124,7 +126,8 @@ const NewProductScreen = (): React.JSX.Element => {
       const response: AxiosResponse = await axiosInstance.post(url, data);
       const dataResponse = response.data;
 
-      console.log('==== dataResponse: ', JSON.stringify(dataResponse));
+      setShouldFetchProducts(true);
+      navigation.goBack()
     } catch (e) {
       console.error(
         'There was a problem trying to create a financial product: ',
