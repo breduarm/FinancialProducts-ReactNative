@@ -11,7 +11,7 @@ import {Routes} from '../enums/Routes';
 import {AxiosResponse} from 'axios';
 import axiosInstance from '../configs/axiosConfig';
 
-const NewProductScreen = ({route, navigation}): React.JSX.Element => {
+const ProductFormScreen = ({route, navigation}): React.JSX.Element => {
   const [id, setID] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -243,4 +243,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NewProductScreen;
+export default ProductFormScreen;
