@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
 import {Pressable, StyleSheet, Text, TextInput} from 'react-native';
-import { formatDateToLocale } from '../utils';
+import Colors from '../theme/ColorSqueme';
 
 type InputWithErrorProps = {
   label: string;
@@ -61,23 +61,23 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     fontWeight: '900',
     fontSize: 12,
-    color: '#303034',
+    color: Colors.primaryText,
   },
   input: {
     height: 40,
     borderWidth: 1,
-    borderColor: '#ECECED',
+    borderColor: Colors.lightGray,
     padding: 10,
     borderRadius: 4,
   },
   inputError: {
-    borderColor: '#C32B1F',
+    borderColor: Colors.error,
   },
   textError: {
     marginVertical: 4,
     fontWeight: '700',
     fontSize: 10,
-    color: '#C32B1F',
+    color: Colors.error,
   },
 });
 

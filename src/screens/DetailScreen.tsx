@@ -19,19 +19,13 @@ const DetailScreen = ({route, navigation}): React.JSX.Element => {
 
   const confirmDeleteProduct = async () => {
     setShowModal(false);
-    const id = '00012';
     try {
-      const messageResponse: string = await deleteProductById(id);
-      console.info(
-        '==== I: confirmDeleteProduct messageResponse = ',
-        messageResponse,
-      );
-
-      deleteProduct(id);
+      const messageResponse: string = await deleteProductById(product.id);
+      deleteProduct(product.id);
       navigation.goBack();
     } catch (e) {
       console.error(
-        'There was a problem trying to delete a financial product id: ' + id,
+        'There was a problem trying to delete a financial product id: ' + product.id,
         e,
       );
     }

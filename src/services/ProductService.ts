@@ -22,7 +22,7 @@ export const addNewProduct = async (
 };
 
 export const deleteProductById = async (id: string): Promise<string> => {
-  const url = Routes.DELETE_PRODUCT+id;
+  const url = Routes.DELETE_PRODUCT.replace(':id', id);
   const response: AxiosResponse = await axiosInstance.delete(url);
   const messageResponse: string = response.data.message;
 

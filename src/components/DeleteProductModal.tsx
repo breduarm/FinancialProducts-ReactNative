@@ -3,6 +3,7 @@ import {Modal, Pressable, StyleSheet, View, Text} from 'react-native';
 import PrimaryButton from './PrimaryButton';
 import Spacer from './Spacer';
 import SecondaryButton from './SecondaryButton';
+import Colors from '../theme/ColorSqueme';
 
 type DeleteProductModalProps = {
   showModal: boolean;
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   modalView: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.background,
     borderTopStartRadius: 20,
     borderTopEndRadius: 20,
     width: '100%',
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 2,
-    backgroundColor: '#F1F2F7',
+    backgroundColor: Colors.lightGray,
   },
 });
 
