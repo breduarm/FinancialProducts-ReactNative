@@ -38,6 +38,7 @@ const DetailScreen = ({route, navigation}): React.JSX.Element => {
     <View style={styles.content}>
       <DeleteProductModal
         showModal={showModal}
+        productName={product.name}
         setShowModal={setShowModal}
         onConfirmDeleteProduct={confirmDeleteProduct}
       />

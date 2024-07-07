@@ -7,12 +7,14 @@ import {ButtonStyles} from '../enums/ButtonStyles';
 
 type DeleteProductModalProps = {
   showModal: boolean;
+  productName: string,
   setShowModal: Dispatch<SetStateAction<boolean>>;
   onConfirmDeleteProduct: () => void;
 };
 
 const DeleteProductModal = ({
   showModal,
+  productName,
   setShowModal,
   onConfirmDeleteProduct,
 }: DeleteProductModalProps): React.JSX.Element => {
@@ -29,7 +31,7 @@ const DeleteProductModal = ({
           </Pressable>
           <View style={styles.divider} />
           <Text style={styles.modalTitle}>
-            ¿Estás seguro de eliminar el producto [titulo del producto]?
+            ¿Estás seguro de eliminar el producto {productName}?
           </Text>
           <View style={styles.divider} />
 
