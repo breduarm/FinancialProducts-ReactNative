@@ -32,7 +32,7 @@ const CustomButton = ({
   }
 
   return (
-    <TouchableHighlight style={[styles.container, containerStyle]} onPress={handleClick}>
+    <TouchableHighlight style={[styles.container, containerStyle]} onPress={handleClick} testID='CustomButton'>
       <Text style={[styles.text, textStyle]}>{label}</Text>
     </TouchableHighlight>
   );
