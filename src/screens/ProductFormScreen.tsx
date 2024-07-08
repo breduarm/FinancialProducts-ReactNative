@@ -53,9 +53,13 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
 
   const handleSubmitForm = useCallback(() => {
     if (
+      id === '' ||
       idError ||
+      name === '' ||
       nameError ||
+      description === '' ||
       descriptionError ||
+      logo === '' ||
       logoError ||
       releaseDateError
     ) {
