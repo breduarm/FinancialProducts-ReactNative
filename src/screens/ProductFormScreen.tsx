@@ -157,12 +157,10 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
             onPress={() => {
               setShowDateModal(true);
             }}
-            validateInput={validateReleaseDate}
           />
 
           <DatePicker
             date={releaseDate}
-            onDateChange={setReleaseDate}
             mode="date"
             modal={true}
             open={showDateModal}
@@ -172,6 +170,8 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
             onConfirm={(date: Date) => {
               setShowDateModal(false);
               setReleaseDate(date);
+              const error = validateReleaseDate(date);
+              setReleaseDateError(error);
             }}
           />
 

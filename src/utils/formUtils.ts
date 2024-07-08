@@ -85,23 +85,21 @@ export const validateLogo = (value: string): string => {
  * @returns {string} An error message if validation fails, otherwise an empty string.
  */
 export const validateReleaseDate = (
-  value: string,
+  valueDate: Date,
   currentDate: Date = new Date(),
 ): string => {
-  const trimmedValue = value.trim();
+  console.log("==== L: validateReleaseDate");
 
-  if (trimmedValue === '') {
+  if (isNaN(valueDate.getTime())) {
     return 'Este campo es requerido';
   }
 
-  const valueDate = new Date(trimmedValue);
-
-  if (isNaN(valueDate.getTime())) {
-    return 'Formato de fecha inválido';
-  }
+  console.log("==== L: ", valueDate);
 
   const currentDateTime = new Date(currentDate);
   currentDateTime.setHours(0, 0, 0, 0);
+
+  console.log("==== L: ", currentDateTime);
 
   if (valueDate < currentDateTime) {
     return 'La fecha debe ser igual o mayor a la fecha actual';
