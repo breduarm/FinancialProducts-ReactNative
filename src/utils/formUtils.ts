@@ -88,18 +88,12 @@ export const validateReleaseDate = (
   valueDate: Date,
   currentDate: Date = new Date(),
 ): string => {
-  console.log("==== L: validateReleaseDate");
-
   if (isNaN(valueDate.getTime())) {
     return 'Este campo es requerido';
   }
 
-  console.log("==== L: ", valueDate);
-
   const currentDateTime = new Date(currentDate);
   currentDateTime.setHours(0, 0, 0, 0);
-
-  console.log("==== L: ", currentDateTime);
 
   if (valueDate < currentDateTime) {
     return 'La fecha debe ser igual o mayor a la fecha actual';

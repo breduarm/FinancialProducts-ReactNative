@@ -7,6 +7,8 @@ describe('InputWithError', () => {
     label: 'Test Label',
     placeholder: 'Test Placeholder',
     value: '',
+    error: '',
+    setError: jest.fn(),
     onChangeText: jest.fn(),
     validateInput: jest.fn(),
   };
@@ -24,6 +26,7 @@ describe('InputWithError', () => {
     const validateInputMock = jest.fn().mockReturnValue('Error message');
     const props = {
       ...defaultProps,
+      error: validateInputMock(),
       validateInput: validateInputMock,
       value: 'test',
     };

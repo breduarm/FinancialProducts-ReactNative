@@ -195,17 +195,9 @@ describe('validateLogo', () => {
 describe('validateReleaseDate', () => {
   const mockCurrentDate = new Date('2024-07-01T00:00:00Z');
 
-  it('should return error for empty value', () => {
-    const exampleValue = '';
-    const expectedValue = 'Este campo es requerido';
-    const result = validateReleaseDate(exampleValue);
-
-    expect(result).toBe(expectedValue);
-  });
-
   it('should return error for invalid date format', () => {
-    const exampleValue = 'invalid date';
-    const expectedValue = 'Formato de fecha inválido';
+    const exampleValue = new Date('invalid date');
+    const expectedValue = 'Este campo es requerido';
     const result = validateReleaseDate(exampleValue);
 
     expect(result).toBe(expectedValue);
@@ -214,13 +206,13 @@ describe('validateReleaseDate', () => {
   it('should return error for date less than current date', () => {
     const exampleValue = new Date('2024-06-30T00:00:00Z'); // One day before mock current date
     const expectedValue = 'La fecha debe ser igual o mayor a la fecha actual';
-    const result = validateReleaseDate(exampleValue.toISOString(), mockCurrentDate);
+    const result = validateReleaseDate(exampleValue, mockCurrentDate);
 
     expect(result).toBe(expectedValue);
   });
 
   it('should return empty string for current date', () => {
-    const exampleValue = mockCurrentDate.toISOString();
+    const exampleValue = mockCurrentDate;
     const expectedValue = '';
     const result = validateReleaseDate(exampleValue, mockCurrentDate);
 
@@ -230,7 +222,7 @@ describe('validateReleaseDate', () => {
   it('should return empty string for future date', () => {
     const exampleValue = new Date('2024-07-02T00:00:00Z'); // One day after mock current date
     const expectedValue = '';
-    const result = validateReleaseDate(exampleValue.toISOString(), mockCurrentDate);
+    const result = validateReleaseDate(exampleValue, mockCurrentDate);
 
     expect(result).toBe(expectedValue);
   });

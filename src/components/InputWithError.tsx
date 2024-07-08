@@ -29,10 +29,8 @@ const InputWithError = ({
   onPress,
   validateInput,
 }: InputWithErrorProps): React.JSX.Element => {
-  // const [touched, setTouched] = useState(false);
 
   const handleBlur = async () => {
-    // setTouched(true);
     onBlur && onBlur(value);
     const validationError = validateInput ? validateInput(value) : '';
     setError && setError(validationError);
