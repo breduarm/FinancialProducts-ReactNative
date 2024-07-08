@@ -8,7 +8,10 @@ type InputWithErrorProps = {
   value: string;
   editable?: boolean;
   isDatePicker?: boolean;
-  onChangeText: Dispatch<SetStateAction<any>>;
+  error?: string,
+  setError?: Dispatch<SetStateAction<string>>;
+  onChangeText?: Dispatch<SetStateAction<string>>;
+  onBlur?: (value: string) => void,
   onPress?: () => void;
   validateInput?: (value: string) => string;
 };
@@ -19,17 +22,20 @@ const InputWithError = ({
   value,
   editable,
   isDatePicker,
+  error,
+  setError,
   onChangeText,
+  onBlur,
   onPress,
   validateInput,
 }: InputWithErrorProps): React.JSX.Element => {
-  const [touched, setTouched] = useState(false);
-  const [error, setError] = useState('');
+  // const [touched, setTouched] = useState(false);
 
-  const handleBlur = () => {
-    setTouched(true);
+  const handleBlur = async () => {
+    // setTouched(true);
+    onBlur && onBlur(value);
     const validationError = validateInput ? validateInput(value) : '';
-    setError(validationError);
+    setError && setError(validationError);
   };
 
   return (
@@ -51,7 +57,7 @@ const InputWithError = ({
           editable={editable}
         />
       )}
-      {touched && error && <Text style={styles.textError}>{error}</Text>}
+      {error && <Text style={styles.textError}>{error}</Text>}
     </>
   );
 };

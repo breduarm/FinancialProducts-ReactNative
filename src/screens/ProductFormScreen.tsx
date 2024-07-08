@@ -5,7 +5,7 @@ import Colors from '../theme/ColorSqueme';
 import InputWithError from '../components/InputWithError';
 import DatePicker from 'react-native-date-picker';
 import ProductResponse from '../models/responses/ProductResponse';
-import {addNewProduct} from '../services/ProductService';
+import {addNewProduct, verifyID} from '../services/ProductService';
 import useProductsContext from '../hooks/useProductsContext';
 import {formatDateToLocale, formatDateToYearMonthDay} from '../utils/dateUtils';
 import {
@@ -20,10 +20,15 @@ import CustomButton from '../components/CustomButton';
 
 const ProductFormScreen = ({navigation}): React.JSX.Element => {
   const [id, setID] = useState('');
+  const [idError, setIdError] = useState('');
   const [name, setName] = useState('');
+  const [nameError, setNameError] = useState('');
   const [description, setDescription] = useState('');
+  const [descriptionError, setDescriptionError] = useState('');
   const [logo, setLogo] = useState('');
+  const [logoError, setLogoError] = useState('');
   const [releaseDate, setReleaseDate] = useState(new Date());
+  const [releaseDateError, setReleaseDateError] = useState('');
   const [reviewDate, setReviewDate] = useState(new Date());
   const [showDateModal, setShowDateModal] = useState(false);
 
@@ -35,15 +40,18 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
     setReviewDate(new Date(oneYearLater));
   }, [releaseDate]);
 
-  const handleSubmitForm = useCallback(() => {
-    const idError = validateID(id);
-    const nameError = validateName(name);
-    const descriptionError = validateDescription(description);
-    const logoError = validateLogo(logo);
-    const releaseDateError = validateReleaseDate(
-      formatDateToLocale(releaseDate),
-    );
+  const verifyProductID = async (id: string) => {
+    try {
+      const wasAlreadyRegistered: boolean = await verifyID(id);
+      const errorMessage = wasAlreadyRegistered ? 'ID no válido' : '';
+      setIdError(errorMessage);
+    } catch (e) {
+      console.error('There was a problem trying to verify an id: ' + id, e);
+      setIdError('ID no válido');
+    }
+  };
 
+  const handleSubmitForm = useCallback(() => {
     if (
       idError ||
       nameError ||
@@ -101,14 +109,19 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
             label="ID"
             placeholder="Ingrese el ID"
             value={id}
+            error={idError}
+            setError={setIdError}
             onChangeText={setID}
             validateInput={validateID}
+            onBlur={verifyProductID}
           />
 
           <InputWithError
             label="Nombre"
             placeholder="Ingrese el nombre"
             value={name}
+            error={nameError}
+            setError={setNameError}
             onChangeText={setName}
             validateInput={validateName}
           />
@@ -117,6 +130,8 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
             label="Descripción"
             placeholder="Ingrese una descripción"
             value={description}
+            error={descriptionError}
+            setError={setDescriptionError}
             onChangeText={setDescription}
             validateInput={validateDescription}
           />
@@ -125,6 +140,8 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
             label="Logo"
             placeholder="Agrege un logo"
             value={logo}
+            error={logoError}
+            setError={setLogoError}
             onChangeText={setLogo}
             validateInput={validateLogo}
           />
@@ -133,11 +150,10 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
             label="Fecha Liberación"
             placeholder="Ingrese la fecha de liberación"
             value={formatDateToLocale(releaseDate)}
+            error={releaseDateError}
+            setError={setReleaseDateError}
             editable={false}
             isDatePicker={true}
-            onChangeText={value => {
-              setReleaseDate(new Date(value));
-            }}
             onPress={() => {
               setShowDateModal(true);
             }}
@@ -164,7 +180,6 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
             placeholder="Ingrese la fecha de revisión"
             value={formatDateToLocale(reviewDate)}
             editable={false}
-            onChangeText={setReviewDate}
           />
         </View>
       </ScrollView>

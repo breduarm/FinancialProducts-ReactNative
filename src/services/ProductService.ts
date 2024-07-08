@@ -44,3 +44,10 @@ export const deleteProductById = async (id: string): Promise<string> => {
 
   return messageResponse;
 };
+
+export const verifyID = async (id: string): Promise<boolean> => {
+  const url = Routes.VERIFY_ID.replace(':id', id);
+  const response: AxiosResponse = await axiosInstance.get(url);
+
+  return response.data;
+}
