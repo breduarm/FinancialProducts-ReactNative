@@ -31,6 +31,7 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
   const [releaseDateError, setReleaseDateError] = useState('');
   const [reviewDate, setReviewDate] = useState(new Date());
   const [showDateModal, setShowDateModal] = useState(false);
+  const [hasUserTouchedForm, setHasUserTouchedForm] = useState(false);
 
   const {updateProducts} = useProductsContext();
 
@@ -42,6 +43,7 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
 
   const verifyProductID = async (id: string) => {
     try {
+      if (idError !== '') return;
       const wasAlreadyRegistered: boolean = await verifyID(id);
       const errorMessage = wasAlreadyRegistered ? 'ID no válido' : '';
       setIdError(errorMessage);
@@ -49,35 +51,6 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
       console.error('There was a problem trying to verify an id: ' + id, e);
       setIdError('ID no válido');
     }
-  };
-
-  const handleSubmitForm = useCallback(() => {
-    if (
-      id === '' ||
-      idError ||
-      name === '' ||
-      nameError ||
-      description === '' ||
-      descriptionError ||
-      logo === '' ||
-      logoError ||
-      releaseDateError
-    ) {
-      Alert.alert(
-        'Error al enviar el Formulario',
-        'Por favor, revise la información ingresada y corrija los errores antes enviar el formulario',
-      );
-    } else {
-      createProduct();
-    }
-  }, [id, name, description, logo, releaseDate]);
-
-  const handleClearForm = () => {
-    setID('');
-    setName('');
-    setDescription('');
-    setLogo('');
-    setReleaseDate(new Date());
   };
 
   const createProduct = async () => {
@@ -101,6 +74,45 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
     }
   };
 
+  const handleSubmitForm = useCallback(() => {
+    const newIdError = idError !== '' ? idError :  validateID(id);
+    const nameError = validateName(name);
+    const descriptionError = validateDescription(description);
+    const logoError = validateLogo(logo);
+    const releaseDateError = validateReleaseDate(releaseDate);
+
+    const isFormValid =
+      hasUserTouchedForm &&
+      newIdError === '' &&
+      nameError === '' &&
+      descriptionError === '' &&
+      logoError === '' &&
+      releaseDateError === '';
+
+    if (isFormValid) {
+      createProduct();
+    } else {
+      setIdError(newIdError);
+      setNameError(nameError);
+      setDescriptionError(descriptionError);
+      setLogoError(logoError);
+      setReleaseDateError(releaseDateError);
+
+      Alert.alert(
+        'Error al enviar el Formulario',
+        'Por favor, revise la información ingresada y corrija los errores antes de enviar el formulario',
+      );
+    }
+  }, [id, idError, name, description, logo, releaseDate, hasUserTouchedForm]);
+
+  const handleClearForm = () => {
+    setID('');
+    setName('');
+    setDescription('');
+    setLogo('');
+    setReleaseDate(new Date());
+  };
+
   return (
     <View style={styles.content}>
       <Text style={styles.title}>Formulario de Registro</Text>
@@ -118,6 +130,7 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
             onChangeText={setID}
             validateInput={validateID}
             onBlur={verifyProductID}
+            setHasBeenTouched={setHasUserTouchedForm}
           />
 
           <InputWithError
@@ -128,6 +141,7 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
             setError={setNameError}
             onChangeText={setName}
             validateInput={validateName}
+            setHasBeenTouched={setHasUserTouchedForm}
           />
 
           <InputWithError
@@ -138,6 +152,7 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
             setError={setDescriptionError}
             onChangeText={setDescription}
             validateInput={validateDescription}
+            setHasBeenTouched={setHasUserTouchedForm}
           />
 
           <InputWithError
@@ -148,6 +163,7 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
             setError={setLogoError}
             onChangeText={setLogo}
             validateInput={validateLogo}
+            setHasBeenTouched={setHasUserTouchedForm}
           />
 
           <InputWithError
@@ -161,6 +177,7 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
             onPress={() => {
               setShowDateModal(true);
             }}
+            setHasBeenTouched={setHasUserTouchedForm}
           />
 
           <DatePicker
@@ -168,10 +185,15 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
             mode="date"
             modal={true}
             open={showDateModal}
+            onStateChange={() => {
+              console.log('==== L: DatePicker onStateChange');
+            }}
             onCancel={() => {
+              setHasUserTouchedForm(true);
               setShowDateModal(false);
             }}
             onConfirm={(date: Date) => {
+              setHasUserTouchedForm(true);
               setShowDateModal(false);
               setReleaseDate(date);
               const error = validateReleaseDate(date);
@@ -184,6 +206,7 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
             placeholder="Ingrese la fecha de revisión"
             value={formatDateToLocale(reviewDate)}
             editable={false}
+            setHasBeenTouched={setHasUserTouchedForm}
           />
         </View>
       </ScrollView>

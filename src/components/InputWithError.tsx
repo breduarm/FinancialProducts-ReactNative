@@ -14,6 +14,7 @@ type InputWithErrorProps = {
   onBlur?: (value: string) => void,
   onPress?: () => void;
   validateInput?: (value: string) => string;
+  setHasBeenTouched: Dispatch<SetStateAction<boolean>>;
 };
 
 const InputWithError = ({
@@ -28,11 +29,13 @@ const InputWithError = ({
   onBlur,
   onPress,
   validateInput,
+  setHasBeenTouched,
 }: InputWithErrorProps): React.JSX.Element => {
 
   const handleBlur = async () => {
-    onBlur && onBlur(value);
+    setHasBeenTouched(true);
     const validationError = validateInput ? validateInput(value) : '';
+    onBlur && onBlur(value);
     setError && setError(validationError);
   };
 
