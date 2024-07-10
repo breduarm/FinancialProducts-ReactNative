@@ -11,6 +11,7 @@ describe('InputWithError', () => {
     setError: jest.fn(),
     onChangeText: jest.fn(),
     validateInput: jest.fn(),
+    setHasBeenTouched: jest.fn(),
   };
 
   it('should render the component with given props', () => {
