@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {StyleSheet, View, Text, ScrollView, Alert} from 'react-native';
 import Spacer from '../components/Spacer';
 import Colors from '../theme/ColorSqueme';
@@ -35,6 +35,12 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
 
   const {updateProducts} = useProductsContext();
 
+  const debounceRef = useRef<number | undefined>();
+
+  useEffect(() => {
+    handleIDChange(id);
+  }, [id]);
+
   useEffect(() => {
     const startDate = new Date(releaseDate);
     const oneYearLater = startDate.setFullYear(startDate.getFullYear() + 1);
@@ -43,13 +49,17 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
 
   const verifyProductID = async (id: string) => {
     try {
-      if (idError !== '') return;
-      const wasAlreadyRegistered: boolean = await verifyID(id);
-      const errorMessage = wasAlreadyRegistered ? 'ID no válido' : '';
-      setIdError(errorMessage);
+      const idError = validateID(id);
+      if (idError !== '') {
+        setIdError(idError);
+      } else {
+        const wasAlreadyRegistered: boolean = await verifyID(id);
+        const errorMessage = wasAlreadyRegistered ? 'ID no válido' : '';
+        setIdError(errorMessage);
+      }
     } catch (e) {
-      console.error('There was a problem trying to verify an id: ' + id, e);
-      setIdError('ID no válido');
+      console.log('There was a problem trying to verify an id: ' + id, e);
+      setIdError('Hubo un problema al verificar el ID');
     }
   };
 
@@ -75,7 +85,7 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
   };
 
   const handleSubmitForm = useCallback(() => {
-    const newIdError = idError !== '' ? idError :  validateID(id);
+    const newIdError = idError !== '' ? idError : validateID(id);
     const nameError = validateName(name);
     const descriptionError = validateDescription(description);
     const logoError = validateLogo(logo);
@@ -113,6 +123,19 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
     setReleaseDate(new Date());
   };
 
+  const debounce = (callback: () => void, delay: number) => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+    debounceRef.current = window.setTimeout(callback, delay);
+  };
+
+  const handleIDChange = useCallback((value: string) => {
+    debounce(() => {
+      verifyProductID(value);
+    }, 500);
+  }, []);
+
   return (
     <View style={styles.content}>
       <Text style={styles.title}>Formulario de Registro</Text>
@@ -126,10 +149,7 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
             placeholder="Ingrese el ID"
             value={id}
             error={idError}
-            setError={setIdError}
             onChangeText={setID}
-            validateInput={validateID}
-            onBlur={verifyProductID}
             setHasBeenTouched={setHasUserTouchedForm}
           />
 

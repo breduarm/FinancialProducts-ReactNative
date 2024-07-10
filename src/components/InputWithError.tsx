@@ -1,5 +1,5 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
-import {Pressable, StyleSheet, Text, TextInput} from 'react-native';
+import React, { Dispatch, SetStateAction } from 'react';
+import { Pressable, StyleSheet, Text, TextInput } from 'react-native';
 import Colors from '../theme/ColorSqueme';
 
 type InputWithErrorProps = {
@@ -11,7 +11,6 @@ type InputWithErrorProps = {
   error?: string,
   setError?: Dispatch<SetStateAction<string>>;
   onChangeText?: Dispatch<SetStateAction<string>>;
-  onBlur?: (value: string) => void,
   onPress?: () => void;
   validateInput?: (value: string) => string;
   setHasBeenTouched: Dispatch<SetStateAction<boolean>>;
@@ -26,7 +25,6 @@ const InputWithError = ({
   error,
   setError,
   onChangeText,
-  onBlur,
   onPress,
   validateInput,
   setHasBeenTouched,
@@ -35,7 +33,6 @@ const InputWithError = ({
   const handleBlur = async () => {
     setHasBeenTouched(true);
     const validationError = validateInput ? validateInput(value) : '';
-    onBlur && onBlur(value);
     setError && setError(validationError);
   };
 
