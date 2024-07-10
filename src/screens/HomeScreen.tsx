@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import Spacer from '../components/Spacer';
 import Search from '../components/Search';
 import Products from '../components/Products';
@@ -47,10 +47,14 @@ const HomeScreen = ({navigation}): React.JSX.Element => {
     <View style={styles.content}>
       <Search searchText={searchText} setSearchText={setSearchText} />
       <Spacer value={44} />
-      <Products
+      {filteredProducts.length > 0 ? (
+        <Products
         products={filteredProducts}
         onItemPress={handleShowProductDetail}
       />
+      ) : (
+        <Text style={styles.emptyStateText}>No hay productos disponibles</Text>
+      )}
       <Spacer value={24} />
       <CustomButton label='Agregar' buttonStyle={ButtonStyles.Primary} handleClick={handleAddNewProduct} />
     </View>
@@ -64,6 +68,13 @@ const styles = StyleSheet.create({
     paddingTop: 56,
     paddingBottom: 32,
     backgroundColor: Colors.background,
+  },
+  emptyStateText: {
+    flex: 1,
+    fontSize: 20,
+    fontWeight: '700',
+    color: Colors.secondaryText,
+    alignSelf: 'center',
   },
 });
 
