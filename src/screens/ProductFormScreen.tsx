@@ -36,8 +36,13 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
   const {updateProducts} = useProductsContext();
 
   const debounceRef = useRef<number | undefined>();
+  const isIDFirstRender = useRef(true);
 
   useEffect(() => {
+    if (isIDFirstRender.current) {
+      isIDFirstRender.current = false;
+      return;
+    }
     handleIDChange(id);
   }, [id]);
 
