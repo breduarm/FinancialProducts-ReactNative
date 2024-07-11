@@ -58,7 +58,7 @@ const InputWithError = ({
           onBlur={handleBlur}
           editable={editable}
           onSubmitEditing={() => nextInputRef?.current?.focus()}
-          returnKeyType={nextInputRef ? "next" : "done"}
+          returnKeyType={nextInputRef ? 'next' : 'done'}
           blurOnSubmit={!nextInputRef}
         />
       )}

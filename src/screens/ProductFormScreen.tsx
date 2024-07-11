@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Alert,
   ScrollView,
@@ -11,12 +11,12 @@ import DatePicker from 'react-native-date-picker';
 import CustomButton from '../components/CustomButton';
 import InputWithError from '../components/InputWithError';
 import Spacer from '../components/Spacer';
-import { ButtonStyles } from '../enums/ButtonStyles';
+import {ButtonStyles} from '../enums/ButtonStyles';
 import useProductsContext from '../hooks/useProductsContext';
 import ProductResponse from '../models/responses/ProductResponse';
-import { addNewProduct, verifyID } from '../services/ProductService';
+import {addNewProduct, verifyID} from '../services/ProductService';
 import Colors from '../theme/ColorSqueme';
-import { formatDateToLocale, formatDateToYearMonthDay } from '../utils/dateUtils';
+import {formatDateToLocale, formatDateToYearMonthDay} from '../utils/dateUtils';
 import {
   validateDescription,
   validateID,
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: '700',
-    color: '#303034',
+    color: Colors.primaryText,
     marginBottom: 24,
   },
 });
