@@ -8,9 +8,10 @@ import { ButtonStyles } from '../enums/ButtonStyles';
 import { NavDirections } from '../enums/NavDirections';
 import useProductsContext from '../hooks/useProductsContext';
 import ProductResponse from '../models/responses/ProductResponse';
+import { HomeScreenProps } from '../navigation/StackNavigatorTypes';
 import Colors from '../theme/ColorSqueme';
 
-const HomeScreen = ({navigation}): React.JSX.Element => {
+const HomeScreen = ({navigation}: HomeScreenProps): React.JSX.Element => {
   const [searchText, setSearchText] = useState('');
   const [filteredProducts, setFilteredProducts] = useState<ProductResponse[]>(
     [],
