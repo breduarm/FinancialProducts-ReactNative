@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Image} from 'react-native';
 import Colors from '../theme/ColorSqueme';
 import ProductResponse from '../models/responses/ProductResponse';
 
@@ -18,7 +18,7 @@ const ProductItem = ({
         <Text style={styles.title}>{item.name}</Text>
         <Text style={styles.description}>{item.description}</Text>
       </View>
-      <View style={styles.icon} />
+      <Image style={styles.icon} source={require("../assets/imgs/chevron-right.png")} />
     </Pressable>
     <View style={styles.divider} />
   </>
@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
   icon: {
     height: 16,
     width: 8,
-    backgroundColor: Colors.primaryGray,
   },
   divider: {
     height: 1,
