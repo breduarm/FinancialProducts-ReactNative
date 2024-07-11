@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, RefObject, SetStateAction } from 'react';
 import { Pressable, StyleSheet, Text, TextInput } from 'react-native';
 import Colors from '../theme/ColorSqueme';
 
@@ -8,7 +8,9 @@ type InputWithErrorProps = {
   value: string;
   editable?: boolean;
   isDatePicker?: boolean;
-  error?: string,
+  inputRef?: RefObject<TextInput>;
+  nextInputRef?: RefObject<TextInput>;
+  error?: string;
   setError?: Dispatch<SetStateAction<string>>;
   onChangeText?: Dispatch<SetStateAction<string>>;
   onPress?: () => void;
@@ -22,6 +24,8 @@ const InputWithError = ({
   value,
   editable,
   isDatePicker,
+  inputRef,
+  nextInputRef,
   error,
   setError,
   onChangeText,
@@ -29,7 +33,6 @@ const InputWithError = ({
   validateInput,
   setHasBeenTouched,
 }: InputWithErrorProps): React.JSX.Element => {
-
   const handleBlur = async () => {
     setHasBeenTouched(true);
     const validationError = validateInput ? validateInput(value) : '';
@@ -47,12 +50,14 @@ const InputWithError = ({
         </Pressable>
       ) : (
         <TextInput
+          ref={inputRef}
           style={[styles.input, error ? styles.inputError : null]}
           placeholder={placeholder}
           value={value}
           onChangeText={onChangeText}
           onBlur={handleBlur}
           editable={editable}
+          onSubmitEditing={() => nextInputRef?.current?.focus()}
         />
       )}
       {error && <Text style={styles.textError}>{error}</Text>}

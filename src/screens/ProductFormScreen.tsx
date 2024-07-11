@@ -1,13 +1,22 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {StyleSheet, View, Text, ScrollView, Alert} from 'react-native';
-import Spacer from '../components/Spacer';
-import Colors from '../theme/ColorSqueme';
-import InputWithError from '../components/InputWithError';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import ProductResponse from '../models/responses/ProductResponse';
-import {addNewProduct, verifyID} from '../services/ProductService';
+import CustomButton from '../components/CustomButton';
+import InputWithError from '../components/InputWithError';
+import Spacer from '../components/Spacer';
+import { ButtonStyles } from '../enums/ButtonStyles';
 import useProductsContext from '../hooks/useProductsContext';
-import {formatDateToLocale, formatDateToYearMonthDay} from '../utils/dateUtils';
+import ProductResponse from '../models/responses/ProductResponse';
+import { addNewProduct, verifyID } from '../services/ProductService';
+import Colors from '../theme/ColorSqueme';
+import { formatDateToLocale, formatDateToYearMonthDay } from '../utils/dateUtils';
 import {
   validateDescription,
   validateID,
@@ -15,8 +24,6 @@ import {
   validateName,
   validateReleaseDate,
 } from '../utils/formUtils';
-import {ButtonStyles} from '../enums/ButtonStyles';
-import CustomButton from '../components/CustomButton';
 
 const ProductFormScreen = ({navigation}): React.JSX.Element => {
   const [id, setID] = useState('');
@@ -33,10 +40,14 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
   const [showDateModal, setShowDateModal] = useState(false);
   const [hasUserTouchedForm, setHasUserTouchedForm] = useState(false);
 
-  const {updateProducts} = useProductsContext();
-
   const debounceRef = useRef<number | undefined>();
   const isIDFirstRender = useRef(true);
+  const idInputRef = useRef<TextInput>(null);
+  const nameInputRef = useRef<TextInput>(null);
+  const descriptionInputRef = useRef<TextInput>(null);
+  const logoInputRef = useRef<TextInput>(null);
+
+  const {updateProducts} = useProductsContext();
 
   useEffect(() => {
     if (isIDFirstRender.current) {
@@ -150,6 +161,8 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
         automaticallyAdjustContentInsets={true}>
         <View>
           <InputWithError
+            inputRef={idInputRef}
+            nextInputRef={nameInputRef}
             label="ID"
             placeholder="Ingrese el ID"
             value={id}
@@ -159,6 +172,8 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
           />
 
           <InputWithError
+            inputRef={nameInputRef}
+            nextInputRef={descriptionInputRef}
             label="Nombre"
             placeholder="Ingrese el nombre"
             value={name}
@@ -170,6 +185,8 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
           />
 
           <InputWithError
+            inputRef={descriptionInputRef}
+            nextInputRef={logoInputRef}
             label="Descripción"
             placeholder="Ingrese una descripción"
             value={description}
@@ -181,6 +198,7 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
           />
 
           <InputWithError
+            inputRef={logoInputRef}
             label="Logo"
             placeholder="Agrege un logo"
             value={logo}
@@ -210,9 +228,6 @@ const ProductFormScreen = ({navigation}): React.JSX.Element => {
             mode="date"
             modal={true}
             open={showDateModal}
-            onStateChange={() => {
-              console.log('==== L: DatePicker onStateChange');
-            }}
             onCancel={() => {
               setHasUserTouchedForm(true);
               setShowDateModal(false);
