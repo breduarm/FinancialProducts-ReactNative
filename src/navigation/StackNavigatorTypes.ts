@@ -6,8 +6,8 @@ import ProductResponse from '../models/responses/ProductResponse';
 // Define the type for the stack parameter list
 export type RootStackParamList = {
   Home: undefined;
-  Detail: { product: ProductResponse};
-  ProductForm: undefined;
+  Detail: { product: ProductResponse };
+  ProductForm?: { product?: ProductResponse };
 };
 
 // Combine both route and navigation props for a screen component

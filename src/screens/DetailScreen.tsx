@@ -28,7 +28,7 @@ const DetailScreen = ({
   };
 
   const handleEditProduct = () => {
-    navigation.navigate(NavDirections.PRODUCT_FORM);
+    navigation.navigate(NavDirections.PRODUCT_FORM, { product: product });
   };
 
   const confirmDeleteProduct = async () => {

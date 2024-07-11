@@ -27,15 +27,19 @@ import {
 } from '../utils/formUtils';
 
 const ProductFormScreen = ({
+  route,
   navigation,
 }: ProductFormScreenProps): React.JSX.Element => {
-  const [id, setID] = useState('');
+  const product: ProductResponse | undefined = route?.params?.product;
+
+  const [isToEdit] = useState(product !== undefined)
+  const [id, setID] = useState(product ? product.id : '');
   const [idError, setIdError] = useState('');
-  const [name, setName] = useState('');
+  const [name, setName] = useState(product ? product.name : '');
   const [nameError, setNameError] = useState('');
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState(product ? product.description : '');
   const [descriptionError, setDescriptionError] = useState('');
-  const [logo, setLogo] = useState('');
+  const [logo, setLogo] = useState(product ? product.logo : '');
   const [logoError, setLogoError] = useState('');
   const [releaseDate, setReleaseDate] = useState(new Date());
   const [releaseDateError, setReleaseDateError] = useState('');
@@ -157,7 +161,7 @@ const ProductFormScreen = ({
 
   return (
     <View style={styles.content}>
-      <Text style={styles.title}>Formulario de Registro</Text>
+      <Text style={styles.title}>{isToEdit ? "Formulario de Edición" : "Formulario de Registro"}</Text>
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -168,6 +172,7 @@ const ProductFormScreen = ({
             nextInputRef={nameInputRef}
             label="ID"
             placeholder="Ingrese el ID"
+            editable={!isToEdit}
             value={id}
             error={idError}
             onChangeText={setID}
@@ -257,7 +262,7 @@ const ProductFormScreen = ({
       <Spacer value={24} />
 
       <CustomButton
-        label="Enviar"
+        label={isToEdit ? "Editar" : "Enviar"}
         buttonStyle={ButtonStyles.Primary}
         handleClick={handleSubmitForm}
       />
