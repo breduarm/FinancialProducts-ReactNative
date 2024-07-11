@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import Spacer from '../components/Spacer';
-import Search from '../components/Search';
-import Products from '../components/Products';
-import {NavDirections} from '../enums/NavDirections';
-import Colors from '../theme/ColorSqueme';
-import ProductResponse from '../models/responses/ProductResponse';
-import useProductsContext from '../hooks/useProductsContext';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import CustomButton from '../components/CustomButton';
+import Products from '../components/Products';
+import Search from '../components/Search';
+import Spacer from '../components/Spacer';
 import { ButtonStyles } from '../enums/ButtonStyles';
+import { NavDirections } from '../enums/NavDirections';
+import useProductsContext from '../hooks/useProductsContext';
+import ProductResponse from '../models/responses/ProductResponse';
+import Colors from '../theme/ColorSqueme';
 
 const HomeScreen = ({navigation}): React.JSX.Element => {
   const [searchText, setSearchText] = useState('');
@@ -36,11 +36,11 @@ const HomeScreen = ({navigation}): React.JSX.Element => {
   }, [searchText, products]);
 
   const handleShowProductDetail = (product: ProductResponse) => {
-    navigation.navigate(NavDirections.DETAIL, product);
+    navigation.navigate(NavDirections.DETAIL, {product: product});
   };
 
   const handleAddNewProduct = () => {
-    navigation.navigate(NavDirections.NEW_PRODUCT);
+    navigation.navigate(NavDirections.PRODUCT_FORM);
   };
 
   return (
@@ -49,14 +49,18 @@ const HomeScreen = ({navigation}): React.JSX.Element => {
       <Spacer value={44} />
       {filteredProducts.length > 0 ? (
         <Products
-        products={filteredProducts}
-        onItemPress={handleShowProductDetail}
-      />
+          products={filteredProducts}
+          onItemPress={handleShowProductDetail}
+        />
       ) : (
         <Text style={styles.emptyStateText}>No hay productos disponibles</Text>
       )}
       <Spacer value={24} />
-      <CustomButton label='Agregar' buttonStyle={ButtonStyles.Primary} handleClick={handleAddNewProduct} />
+      <CustomButton
+        label="Agregar"
+        buttonStyle={ButtonStyles.Primary}
+        handleClick={handleAddNewProduct}
+      />
     </View>
   );
 };

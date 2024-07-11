@@ -1,27 +1,34 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, Image} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import CustomButton from '../components/CustomButton';
 import DeleteProductModal from '../components/DeleteProductModal';
 import Spacer from '../components/Spacer';
-import ProductResponse from '../models/responses/ProductResponse';
-import Colors from '../theme/ColorSqueme';
-import {deleteProductById} from '../services/ProductService';
-import useProductsContext from '../hooks/useProductsContext';
-import CustomButton from '../components/CustomButton';
 import {ButtonStyles} from '../enums/ButtonStyles';
+import {NavDirections} from '../enums/NavDirections';
+import useProductsContext from '../hooks/useProductsContext';
+import ProductResponse from '../models/responses/ProductResponse';
+import {DetailScreenProps} from '../navigation/StackNavigatorTypes';
+import {deleteProductById} from '../services/ProductService';
+import Colors from '../theme/ColorSqueme';
 
-const DetailScreen = ({route, navigation}): React.JSX.Element => {
-  const product: ProductResponse = route.params;
+const DetailScreen = ({
+  route,
+  navigation,
+}: DetailScreenProps): React.JSX.Element => {
+  const product: ProductResponse = route.params.product;
   const {deleteProduct} = useProductsContext();
-  
+
   const [showModal, setShowModal] = useState(false);
   const [imageSource, setImageSource] = useState(product.logo);
 
   const handleImageError = () => {
-    setImageSource('https://www.visa.com.ec/dam/VCOM/regional/lac/SPA/Default/Pay%20With%20Visa/Tarjetas/visa-signature-400x225.jpg');
+    setImageSource(
+      'https://www.visa.com.ec/dam/VCOM/regional/lac/SPA/Default/Pay%20With%20Visa/Tarjetas/visa-signature-400x225.jpg',
+    );
   };
 
   const handleEditProduct = () => {
-    // TODO implement edit functionality
+    navigation.navigate(NavDirections.PRODUCT_FORM);
   };
 
   const confirmDeleteProduct = async () => {
@@ -65,7 +72,11 @@ const DetailScreen = ({route, navigation}): React.JSX.Element => {
 
         <View style={styles.logoContainer}>
           <Text style={[styles.text, styles.logoText]}>Logo</Text>
-          <Image style={styles.logo} source={{uri: imageSource}} onError={handleImageError}/>
+          <Image
+            style={styles.logo}
+            source={{uri: imageSource}}
+            onError={handleImageError}
+          />
         </View>
 
         <View style={styles.infoContainer}>
