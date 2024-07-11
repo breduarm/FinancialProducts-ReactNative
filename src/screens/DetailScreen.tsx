@@ -10,10 +10,15 @@ import CustomButton from '../components/CustomButton';
 import {ButtonStyles} from '../enums/ButtonStyles';
 
 const DetailScreen = ({route, navigation}): React.JSX.Element => {
-  const [showModal, setShowModal] = useState(false);
-
   const product: ProductResponse = route.params;
   const {deleteProduct} = useProductsContext();
+  
+  const [showModal, setShowModal] = useState(false);
+  const [imageSource, setImageSource] = useState(product.logo);
+
+  const handleImageError = () => {
+    setImageSource('https://www.visa.com.ec/dam/VCOM/regional/lac/SPA/Default/Pay%20With%20Visa/Tarjetas/visa-signature-400x225.jpg');
+  };
 
   const handleEditProduct = () => {
     // TODO implement edit functionality
@@ -60,7 +65,7 @@ const DetailScreen = ({route, navigation}): React.JSX.Element => {
 
         <View style={styles.logoContainer}>
           <Text style={[styles.text, styles.logoText]}>Logo</Text>
-          <Image style={styles.logo} source={{uri: product.logo}} />
+          <Image style={styles.logo} source={{uri: imageSource}} onError={handleImageError}/>
         </View>
 
         <View style={styles.infoContainer}>
