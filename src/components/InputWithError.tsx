@@ -1,5 +1,5 @@
-import React, { Dispatch, RefObject, SetStateAction } from 'react';
-import { Pressable, StyleSheet, Text, TextInput } from 'react-native';
+import React, {Dispatch, RefObject, SetStateAction} from 'react';
+import {Pressable, StyleSheet, Text, TextInput} from 'react-native';
 import Colors from '../theme/ColorSqueme';
 
 type InputWithErrorProps = {
@@ -58,6 +58,8 @@ const InputWithError = ({
           onBlur={handleBlur}
           editable={editable}
           onSubmitEditing={() => nextInputRef?.current?.focus()}
+          returnKeyType={nextInputRef ? "next" : "done"}
+          blurOnSubmit={!nextInputRef}
         />
       )}
       {error && <Text style={styles.textError}>{error}</Text>}
