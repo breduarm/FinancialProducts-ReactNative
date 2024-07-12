@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Alert,
   ScrollView,
@@ -11,13 +11,13 @@ import DatePicker from 'react-native-date-picker';
 import CustomButton from '../components/CustomButton';
 import InputWithError from '../components/InputWithError';
 import Spacer from '../components/Spacer';
-import { ButtonStyles } from '../enums/ButtonStyles';
+import {ButtonStyles} from '../enums/ButtonStyles';
 import useProductsContext from '../hooks/useProductsContext';
 import ProductResponse from '../models/responses/ProductResponse';
-import { ProductFormScreenProps } from '../navigation/StackNavigatorTypes';
-import { addNewProduct, verifyID } from '../services/ProductService';
+import {ProductFormScreenProps} from '../navigation/StackNavigatorTypes';
+import {addNewProduct, verifyID} from '../services/ProductService';
 import Colors from '../theme/ColorSqueme';
-import { formatDateToLocale, formatDateToYearMonthDay } from '../utils/dateUtils';
+import {formatDateToLocale, formatDateToYearMonthDay} from '../utils/dateUtils';
 import {
   validateDescription,
   validateID,
@@ -32,12 +32,14 @@ const ProductFormScreen = ({
 }: ProductFormScreenProps): React.JSX.Element => {
   const product: ProductResponse | undefined = route?.params?.product;
 
-  const [isToEdit] = useState(product !== undefined)
+  const [isToEdit] = useState(product !== undefined);
   const [id, setID] = useState(product ? product.id : '');
   const [idError, setIdError] = useState('');
   const [name, setName] = useState(product ? product.name : '');
   const [nameError, setNameError] = useState('');
-  const [description, setDescription] = useState(product ? product.description : '');
+  const [description, setDescription] = useState(
+    product ? product.description : '',
+  );
   const [descriptionError, setDescriptionError] = useState('');
   const [logo, setLogo] = useState(product ? product.logo : '');
   const [logoError, setLogoError] = useState('');
@@ -57,10 +59,15 @@ const ProductFormScreen = ({
   const {updateProducts} = useProductsContext();
 
   useEffect(() => {
+    if (isToEdit) {
+      return;
+    }
+
     if (isIDFirstRender.current) {
       isIDFirstRender.current = false;
       return;
     }
+    
     handleIDChange(id);
   }, [id]);
 
@@ -107,7 +114,15 @@ const ProductFormScreen = ({
     }
   };
 
-  const handleSubmitForm = useCallback(() => {
+  const handleSubmitForm = () => {
+    if (isToEdit) {
+      validateFormToEditProduct();
+    } else {
+      validateFormToCreateProduct();
+    }
+  };
+
+  const validateFormToCreateProduct = useCallback(() => {
     const newIdError = idError !== '' ? idError : validateID(id);
     const nameError = validateName(name);
     const descriptionError = validateDescription(description);
@@ -138,6 +153,35 @@ const ProductFormScreen = ({
     }
   }, [id, idError, name, description, logo, releaseDate, hasUserTouchedForm]);
 
+  const validateFormToEditProduct = useCallback(() => {
+    const nameError = validateName(name);
+    const descriptionError = validateDescription(description);
+    const logoError = validateLogo(logo);
+
+    const isFormValid =
+      hasUserTouchedForm &&
+      nameError === '' &&
+      descriptionError === '' &&
+      logoError === ''
+
+    if (isFormValid) {
+      // TODO perform the call to update the product
+    } else {
+      setNameError(nameError);
+      setDescriptionError(descriptionError);
+      setLogoError(logoError);
+
+      const title = hasUserTouchedForm
+        ? 'Error al enviar el Formulario'
+        : 'Formulario de edición';
+      const body = hasUserTouchedForm
+        ? 'Por favor, revise la información ingresada y corrija los errores antes de enviar el formulario'
+        : 'No se ha detectado cambios en el formulario';
+
+      Alert.alert(title, body);
+    }
+  }, [name, description, logo, hasUserTouchedForm]);
+
   const handleClearForm = () => {
     setID('');
     setName('');
@@ -161,7 +205,9 @@ const ProductFormScreen = ({
 
   return (
     <View style={styles.content}>
-      <Text style={styles.title}>{isToEdit ? "Formulario de Edición" : "Formulario de Registro"}</Text>
+      <Text style={styles.title}>
+        {isToEdit ? 'Formulario de Edición' : 'Formulario de Registro'}
+      </Text>
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -262,7 +308,7 @@ const ProductFormScreen = ({
       <Spacer value={24} />
 
       <CustomButton
-        label={isToEdit ? "Editar" : "Enviar"}
+        label={isToEdit ? 'Editar' : 'Enviar'}
         buttonStyle={ButtonStyles.Primary}
         handleClick={handleSubmitForm}
       />

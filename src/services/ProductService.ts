@@ -1,6 +1,6 @@
-import {AxiosResponse} from 'axios';
-import {Routes} from '../enums/Routes';
+import { AxiosResponse } from 'axios';
 import axiosInstance from '../configs/axiosConfig';
+import { Routes } from '../enums/Routes';
 import ProductResponse from '../models/responses/ProductResponse';
 
 /**
@@ -45,9 +45,20 @@ export const deleteProductById = async (id: string): Promise<string> => {
   return messageResponse;
 };
 
+export const updateProductById = async (
+  id: string,
+  editedProduct: ProductResponse,
+) => {
+  const url = Routes.UPDATE_PRODUCT.replace(':id', id);
+  const response: AxiosResponse = await axiosInstance.put(url, editedProduct);
+  const dataResponse = response.data;
+
+  console.log('==== L: dataResponse = ', dataResponse);
+};
+
 export const verifyID = async (id: string): Promise<boolean> => {
   const url = Routes.VERIFY_ID.replace(':id', id);
   const response: AxiosResponse = await axiosInstance.get(url);
 
   return response.data;
-}
+};

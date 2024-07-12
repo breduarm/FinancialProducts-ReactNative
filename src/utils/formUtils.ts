@@ -80,7 +80,7 @@ export const validateLogo = (value: string): string => {
  *   - Required
  *   - The date must be equal to or greater than the current date
  *
- * @param {string} value - The release date string to validate.
+ * @param {string} valueDate - The release date string to validate.
  * @param {Date} currentDate - The current date.
  * @returns {string} An error message if validation fails, otherwise an empty string.
  */
