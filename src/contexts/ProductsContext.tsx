@@ -4,8 +4,9 @@ import {fetchProducts} from '../services/ProductService';
 
 type ProductsContextProps = {
   products: ProductResponse[];
-  updateProducts: (newProduct: ProductResponse) => void;
+  addProduct: (newProduct: ProductResponse) => void;
   deleteProduct: (id: string) => void;
+  updateProduct: (updatedProduct: ProductResponse) => void;
 };
 
 export const ProductsContext = createContext<ProductsContextProps | undefined>(
@@ -35,7 +36,7 @@ export const ProductsProvider = ({children}: ProductsProviderProps) => {
     fetchProductsData();
   }, []);
 
-  const updateProducts = (newProduct: ProductResponse) => {
+  const addProduct = (newProduct: ProductResponse) => {
     setProducts([...products, newProduct]);
   };
 
@@ -44,8 +45,15 @@ export const ProductsProvider = ({children}: ProductsProviderProps) => {
     setProducts(updatedProducts);
   };
 
+  const updateProduct = (updatedProduct: ProductResponse) => {
+    const updatedProducts = products.map((product: ProductResponse) =>
+      product.id === updatedProduct.id ? updatedProduct : product
+    );
+    setProducts(updatedProducts);
+  }
+
   return (
-    <ProductsContext.Provider value={{products, updateProducts, deleteProduct}}>
+    <ProductsContext.Provider value={{products, addProduct, deleteProduct, updateProduct}}>
       {children}
     </ProductsContext.Provider>
   );

@@ -48,12 +48,12 @@ export const deleteProductById = async (id: string): Promise<string> => {
 export const updateProductById = async (
   id: string,
   editedProduct: ProductResponse,
-) => {
+): Promise<string> => {
   const url = Routes.UPDATE_PRODUCT.replace(':id', id);
   const response: AxiosResponse = await axiosInstance.put(url, editedProduct);
-  const dataResponse = response.data;
+  const messageResponse = response.data.data.message;
 
-  console.log('==== L: dataResponse = ', dataResponse);
+  return messageResponse;
 };
 
 export const verifyID = async (id: string): Promise<boolean> => {
