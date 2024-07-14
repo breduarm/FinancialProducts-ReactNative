@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NavDirections } from '../enums/NavDirections';
-import ProductResponse from '../models/responses/ProductResponse';
+import { ProductResponse } from '../types/responses/ProductReponse';
 
 // Define the type for the stack parameter list
 export type RootStackParamList = {

@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, Text, StyleSheet, Pressable, Image} from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import Colors from '../theme/ColorSqueme';
-import ProductResponse from '../models/responses/ProductResponse';
+import { ProductResponse } from '../types/responses/ProductReponse';
 
 type ItemProps = {
   item: ProductResponse;

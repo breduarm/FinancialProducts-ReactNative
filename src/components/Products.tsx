@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet, FlatList} from 'react-native';
-import ProductItem from './ProductItem';
-import ProductResponse from '../models/responses/ProductResponse';
+import { FlatList, StyleSheet } from 'react-native';
 import Colors from '../theme/ColorSqueme';
+import { ProductResponse } from '../types/responses/ProductReponse';
+import ProductItem from './ProductItem';
 
 type ProductsProps = {
   products: ProductResponse[];

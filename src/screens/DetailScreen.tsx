@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import React, { useState } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import DeleteProductModal from '../components/DeleteProductModal';
 import Spacer from '../components/Spacer';
-import {ButtonStyles} from '../enums/ButtonStyles';
-import {NavDirections} from '../enums/NavDirections';
+import { ButtonStyles } from '../enums/ButtonStyles';
+import { NavDirections } from '../enums/NavDirections';
 import useProductsContext from '../hooks/useProductsContext';
-import ProductResponse from '../models/responses/ProductResponse';
-import {DetailScreenProps} from '../navigation/StackNavigatorTypes';
-import {deleteProductById} from '../services/ProductService';
+import { DetailScreenProps } from '../navigation/StackNavigatorTypes';
+import { deleteProductById } from '../services/ProductService';
 import Colors from '../theme/ColorSqueme';
+import { ProductResponse } from '../types/responses/ProductReponse';
 
 const DetailScreen = ({
   route,

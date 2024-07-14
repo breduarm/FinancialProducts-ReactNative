@@ -12,11 +12,16 @@ import CustomButton from '../components/CustomButton';
 import InputWithError from '../components/InputWithError';
 import Spacer from '../components/Spacer';
 import { ButtonStyles } from '../enums/ButtonStyles';
+import { NavDirections } from '../enums/NavDirections';
 import useProductsContext from '../hooks/useProductsContext';
-import ProductResponse from '../models/responses/ProductResponse';
 import { ProductFormScreenProps } from '../navigation/StackNavigatorTypes';
-import { addNewProduct, updateProductById, verifyID } from '../services/ProductService';
+import {
+  addNewProduct,
+  updateProductById,
+  verifyID,
+} from '../services/ProductService';
 import Colors from '../theme/ColorSqueme';
+import { ProductResponse } from '../types/responses/ProductReponse';
 import { formatDateToLocale, formatDateToYearMonthDay } from '../utils/dateUtils';
 import {
   validateDescription,
@@ -25,7 +30,6 @@ import {
   validateName,
   validateReleaseDate,
 } from '../utils/formUtils';
-import { NavDirections } from '../enums/NavDirections';
 
 const ProductFormScreen = ({
   route,
@@ -57,7 +61,7 @@ const ProductFormScreen = ({
   const descriptionInputRef = useRef<TextInput>(null);
   const logoInputRef = useRef<TextInput>(null);
 
-  const { addProduct, updateProduct } = useProductsContext();
+  const {addProduct, updateProduct} = useProductsContext();
 
   useEffect(() => {
     if (isToEdit) {
@@ -68,7 +72,7 @@ const ProductFormScreen = ({
       isIDFirstRender.current = false;
       return;
     }
-    
+
     handleIDChange(id);
   }, [id]);
 
@@ -96,14 +100,16 @@ const ProductFormScreen = ({
 
   const createProduct = async () => {
     try {
-      const newProduct = new ProductResponse(
+      const date_release = formatDateToYearMonthDay(releaseDate);
+      const date_revision = formatDateToYearMonthDay(reviewDate);
+      const newProduct: ProductResponse = {
         id,
         name,
         description,
         logo,
-        formatDateToYearMonthDay(releaseDate),
-        formatDateToYearMonthDay(reviewDate),
-      );
+        date_release,
+        date_revision,
+      };
       const productResponse = await addNewProduct(newProduct);
       addProduct(productResponse);
       navigation.goBack();
@@ -117,24 +123,26 @@ const ProductFormScreen = ({
 
   const editProduct = async () => {
     try {
-      const editedProduct = new ProductResponse(
+      const date_release = formatDateToYearMonthDay(releaseDate);
+      const date_revision = formatDateToYearMonthDay(reviewDate);
+      const editedProduct: ProductResponse = {
         id,
         name,
         description,
         logo,
-        formatDateToYearMonthDay(releaseDate),
-        formatDateToYearMonthDay(reviewDate),
-      );
+        date_release,
+        date_revision,
+      };
       const messageResponse = await updateProductById(id, editedProduct);
       updateProduct(editedProduct);
-      navigation.navigate(NavDirections.DETAIL, {product: editedProduct})
+      navigation.navigate(NavDirections.DETAIL, {product: editedProduct});
     } catch (e) {
       console.error(
         'There was a problem trying to edit a financial product: ',
         e,
       );
     }
-  }
+  };
 
   const handleSubmitForm = () => {
     if (isToEdit) {
@@ -184,7 +192,7 @@ const ProductFormScreen = ({
       hasUserTouchedForm &&
       nameError === '' &&
       descriptionError === '' &&
-      logoError === ''
+      logoError === '';
 
     if (isFormValid) {
       editProduct();

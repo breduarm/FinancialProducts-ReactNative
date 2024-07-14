@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import axiosInstance from '../configs/axiosConfig';
 import { Routes } from '../enums/Routes';
-import ProductResponse from '../models/responses/ProductResponse';
+import { ProductResponse } from '../types/responses/ProductReponse';
 
 /**
  * Fetches products from the server.

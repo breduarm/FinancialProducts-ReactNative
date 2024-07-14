@@ -7,9 +7,9 @@ import Spacer from '../components/Spacer';
 import { ButtonStyles } from '../enums/ButtonStyles';
 import { NavDirections } from '../enums/NavDirections';
 import useProductsContext from '../hooks/useProductsContext';
-import ProductResponse from '../models/responses/ProductResponse';
 import { HomeScreenProps } from '../navigation/StackNavigatorTypes';
 import Colors from '../theme/ColorSqueme';
+import { ProductResponse } from '../types/responses/ProductReponse';
 
 const HomeScreen = ({navigation}: HomeScreenProps): React.JSX.Element => {
   const [searchText, setSearchText] = useState('');

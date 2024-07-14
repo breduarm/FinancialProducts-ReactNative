@@ -1,6 +1,6 @@
-import React, {ReactNode, createContext, useEffect, useState} from 'react';
-import ProductResponse from '../models/responses/ProductResponse';
-import {fetchProducts} from '../services/ProductService';
+import React, { ReactNode, createContext, useEffect, useState } from 'react';
+import { fetchProducts } from '../services/ProductService';
+import { ProductResponse } from '../types/responses/ProductReponse';
 
 type ProductsContextProps = {
   products: ProductResponse[];
