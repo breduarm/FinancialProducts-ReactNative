@@ -1,7 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableHighlight} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { ButtonStyles } from '../enums/ButtonStyles';
 import Colors from '../theme/ColorSqueme';
-import {ButtonStyles} from '../enums/ButtonStyles';
 
 type CustomButtonProps = {
   label: string;
@@ -32,12 +32,12 @@ const CustomButton = ({
   }
 
   return (
-    <TouchableHighlight
+    <TouchableOpacity
       style={[styles.container, containerStyle]}
       onPress={handleClick}
       testID="CustomButton">
       <Text style={[styles.text, textStyle]}>{label}</Text>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 };
 
